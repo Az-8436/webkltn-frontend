@@ -199,7 +199,7 @@
 
 //   // 2. Gọi API lấy dữ liệu thật
 //   useEffect(() => {
-//     fetch("http://127.0.0.1:8000/api/get-records")
+//     fetch("https://webkltn-backend.onrender.com/api/get-records")
 //       .then((res) => res.json())
 //       .then((data) => {
 //         if (data.status === "success") {
@@ -384,7 +384,7 @@ export default function History() {
   const [filterType, setFilterType] = useState("all");
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/get-records")
+    fetch("https://webkltn-backend.onrender.com/api/get-records")
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "success") {

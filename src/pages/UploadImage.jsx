@@ -26,7 +26,7 @@
 //       const formData = new FormData();
 //       formData.append("file", image);
 
-//       const resOCR = await fetch("http://127.0.0.1:8000/ocr", {
+//       const resOCR = await fetch("https://webkltn-backend.onrender.com/ocr", {
 //         method: "POST",
 //         body: formData,
 //       });
@@ -55,14 +55,14 @@
 //       };
 
 //       // --- BƯỚC 3: GỌI AI CHẨN ĐOÁN (PREDICT) ---
-//       const resPredictDisease = await fetch("http://127.0.0.1:8000/predict-disease", {
+//       const resPredictDisease = await fetch("https://webkltn-backend.onrender.com/predict-disease", {
 //         method: 'POST',
 //         body: JSON.stringify(datatopredict),
 //         headers: {
 //           'Content-Type': 'application/json'
 //         }
 //       });
-//       // const resPredictHypertension = await fetch("http://127.0.0.1:8000/predict-hypertension", {
+//       // const resPredictHypertension = await fetch("https://webkltn-backend.onrender.com/predict-hypertension", {
 //       //   method: 'POST',
 //       //   body: JSON.stringify(datatopredict),
 //       //   headers: {
@@ -185,7 +185,7 @@
 //       formData.append("file", image);
 
 //       // Gọi API OCR (Gemini)
-//       const resOCR = await fetch("http://127.0.0.1:8000/ocr", {
+//       const resOCR = await fetch("https://webkltn-backend.onrender.com/ocr", {
 //         method: "POST",
 //         body: formData,
 //       });
@@ -266,7 +266,7 @@
 
 //       console.log("🚀 Gửi dữ liệu đi dự đoán:", payload);
 
-//       const resPredict = await fetch("http://127.0.0.1:8000/predict-disease", {
+//       const resPredict = await fetch("https://webkltn-backend.onrender.com/predict-disease", {
 //         method: 'POST',
 //         body: JSON.stringify(payload),
 //         headers: { 'Content-Type': 'application/json' }
@@ -450,7 +450,7 @@
 //       formData.append("file", image);
 
 //       // Gọi API OCR như cũ
-//       const resOCR = await fetch("http://127.0.0.1:8000/ocr", {
+//       const resOCR = await fetch("https://webkltn-backend.onrender.com/ocr", {
 //         method: "POST",
 //         body: formData,
 //       });
@@ -517,7 +517,7 @@
 
 //       console.log("📦 Payload gửi đi:", payload);
 
-//       const resPredict = await fetch("http://127.0.0.1:8000/predict-disease", {
+//       const resPredict = await fetch("https://webkltn-backend.onrender.com/predict-disease", {
 //         method: 'POST',
 //         body: JSON.stringify(payload),
 //         headers: { 'Content-Type': 'application/json' }
@@ -696,7 +696,7 @@
 //       formData.append("file", image);
 
 //       // Gọi API OCR
-//       const resOCR = await fetch("http://127.0.0.1:8000/ocr", {
+//       const resOCR = await fetch("https://webkltn-backend.onrender.com/ocr", {
 //         method: "POST",
 //         body: formData,
 //       });
@@ -769,7 +769,7 @@
 
 //       console.log("📦 Payload gửi đi:", payload);
 
-//       const resPredict = await fetch("http://127.0.0.1:8000/predict-disease", {
+//       const resPredict = await fetch("https://webkltn-backend.onrender.com/predict-disease", {
 //         method: 'POST',
 //         body: JSON.stringify(payload),
 //         headers: { 'Content-Type': 'application/json' }
@@ -979,7 +979,7 @@
 //       const formData = new FormData();
 //       formData.append("file", image);
 
-//       const resOCR = await fetch("http://127.0.0.1:8000/ocr", {
+//       const resOCR = await fetch("https://webkltn-backend.onrender.com/ocr", {
 //         method: "POST",
 //         body: formData,
 //       });
@@ -1064,7 +1064,7 @@
 
 //       console.log("📦 Payload gửi đi:", payload);
 
-//       const resPredict = await fetch("http://127.0.0.1:8000/predict-disease", {
+//       const resPredict = await fetch("https://webkltn-backend.onrender.com/predict-disease", {
 //         method: 'POST',
 //         body: JSON.stringify(payload),
 //         headers: { 'Content-Type': 'application/json' }
@@ -1287,7 +1287,7 @@
 //       const formData = new FormData();
 //       formData.append("file", image);
 
-//       const resOCR = await fetch("http://127.0.0.1:8000/ocr", {
+//       const resOCR = await fetch("https://webkltn-backend.onrender.com/ocr", {
 //         method: "POST",
 //         body: formData,
 //       });
@@ -1368,7 +1368,7 @@
 
 //       console.log("📦 Payload gửi đi:", payload);
 
-//       const resPredict = await fetch("http://127.0.0.1:8000/predict-disease", {
+//       const resPredict = await fetch("https://webkltn-backend.onrender.com/predict-disease", {
 //         method: 'POST',
 //         body: JSON.stringify(payload),
 //         headers: { 'Content-Type': 'application/json' }
@@ -1622,7 +1622,7 @@ export default function UploadImage() {
       const formData = new FormData();
       formData.append("file", image);
 
-      const resOCR = await fetch("http://127.0.0.1:8000/ocr", {
+      const resOCR = await fetch("https://webkltn-backend.onrender.com/ocr", {
         method: "POST",
         body: formData,
       });
@@ -1713,7 +1713,7 @@ export default function UploadImage() {
 
       console.log("📦 Payload gửi đi:", payload);
 
-      const resPredict = await fetch("http://127.0.0.1:8000/predict-disease", {
+      const resPredict = await fetch("https://webkltn-backend.onrender.com/predict-disease", {
         method: 'POST',
         body: JSON.stringify(payload),
         headers: { 'Content-Type': 'application/json' }

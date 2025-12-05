@@ -7,7 +7,7 @@ export default function MedicalRecords() {
   const navigate = useNavigate(); // 2. Khai báo hàm navigate
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/get-records")
+    fetch("https://webkltn-backend.onrender.com/api/get-records")
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "success") setRecords(data.data);

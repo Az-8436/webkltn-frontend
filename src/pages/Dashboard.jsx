@@ -20,7 +20,7 @@ export default function Dashboard() {
   // 🔹 Hàm gọi API thật từ Backend
   const fetchData = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/dashboard");
+      const res = await fetch("https://webkltn-backend.onrender.com/api/dashboard");
       const data = await res.json();
 
       if (data.status === "success") {
