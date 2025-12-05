@@ -159,7 +159,7 @@ function StatCard({ title, value, icon, bg, textColor }) {
 
 //   const fetchData = async () => {
 //     try {
-//       const res = await fetch("http://127.0.0.1:8000/api/dashboard");
+//       const res = await fetch("http://webkltn-backend.onrender.com/api/dashboard");
 //       const data = await res.json();
 
 //       if (data.status === "success") {
@@ -614,7 +614,7 @@ function StatCard({ title, value, icon, bg, textColor }) {
 //   // --- LOGIC 2: GỌI API ---
 //   const fetchHistory = async () => {
 //     try {
-//       const res = await fetch("http://127.0.0.1:8000/api/glucose/history");
+//       const res = await fetch("http://webkltn-backend.onrender.com/api/glucose/history");
 //       const data = await res.json();
 //       setHistory(data.data);
 //     } catch (error) { console.error("Lỗi tải lịch sử:", error); }
@@ -631,7 +631,7 @@ function StatCard({ title, value, icon, bg, textColor }) {
 //     setLoading(true);
 
 //     try {
-//       await fetch("http://127.0.0.1:8000/api/glucose/add", {
+//       await fetch("http://webkltn-backend.onrender.com/api/glucose/add", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         body: JSON.stringify({
@@ -766,7 +766,7 @@ function StatCard({ title, value, icon, bg, textColor }) {
 //     setIsTyping(true);
 
 //     try {
-//       const res = await fetch("http://127.0.0.1:8000/api/chat/advice", {
+//       const res = await fetch("http://webkltn-backend.onrender.com/api/chat/advice", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         body: JSON.stringify({

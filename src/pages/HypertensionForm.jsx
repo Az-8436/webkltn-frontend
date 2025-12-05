@@ -15,7 +15,7 @@ export default function HypertensionForm() {
     let result = "Không xác định (chưa có dữ liệu)";
     try {
       // 🛰 Gọi API backend
-      const res = await fetch("http://localhost:8000/predict/hypertension", {
+      const res = await fetch("http://webkltn-backend.onrender.com/predict/hypertension", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(inputData),

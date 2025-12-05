@@ -8,7 +8,7 @@ export default function DoctorDashboard() {
   const [aiResult, setAiResult] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:8080/patients").then((res) => {
+    axios.get("http://webkltn-backend.onrender.com/patients").then((res) => {
       setPatients(res.data);
     });
   }, []);
@@ -26,7 +26,7 @@ export default function DoctorDashboard() {
     const formData = new FormData();
     formData.append("image", file);
 
-    const res = await axios.post("http://localhost:8080/ai/analyze", formData, {
+    const res = await axios.post("http://webkltn-backend.onrender.com/ai/analyze", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
