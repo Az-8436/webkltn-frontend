@@ -158,10 +158,12 @@
 //   );
 // }
 
+// 
+
 import { useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 
-// 💡 Map tên biến => tiếng Việt
+// Map tên biến => tiếng Việt
 const labelMap = {
   name: "Họ tên",
   age: "Tuổi",
@@ -193,13 +195,12 @@ export default function DiagnosisResult() {
   const [doctorNote, setDoctorNote] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
-  // 👇 CÁC DATA TỪ TRANG TRƯỚC (OCR + Form)
   const patientInfo = input?.patient_info || {};
   const bloodTests = input?.blood_tests || {};
+  const units = input?.units || {};
 
   const hasData = (obj) => obj && Object.keys(obj).length > 0;
 
-  // Tránh crash khi reload
   if (!input) {
     return (
       <p className="text-center mt-10 text-red-500">
@@ -215,11 +216,12 @@ export default function DiagnosisResult() {
       const finalPayload = {
         patient_info: patientInfo,
         blood_tests: bloodTests,
+        units: units,
         ai_diagnosis: result,
         doctor_diagnosis: doctorNote,
       };
 
-      const res = await fetch("https://webkltn-backend.onrender.com/api/save-record", {
+      const res = await fetch("http://127.0.0.1:8000/api/save-record", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(finalPayload),
@@ -241,12 +243,12 @@ export default function DiagnosisResult() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 space-y-6 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold text-center text-blue-800">
+    <div className="max-w-5xl mx-auto p-4 md:p-6 space-y-6 bg-gray-50 min-h-screen">
+      <h1 className="text-2xl md:text-3xl font-bold text-center text-blue-800">
         🔍 Kết quả & Đối chiếu
       </h1>
 
-      {/* ---------- KHỐI CHẨN ĐOÁN ------------ */}
+      {/* ---------- KHỐI CHẨN ĐOÁN (Grid đổi thành 1 cột trên mobile) ------------ */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white shadow-xl rounded-xl p-6 border-l-8 border-blue-600">
           <h2 className="text-xl font-bold mb-3 text-blue-700">
@@ -275,18 +277,20 @@ export default function DiagnosisResult() {
           <h3 className="font-bold text-lg mb-4 text-gray-700 border-b pb-2">
             🧑‍⚕️ Thông tin bệnh nhân
           </h3>
-          <table className="w-full text-sm">
-            <tbody>
-              {Object.entries(patientInfo).map(([key, value]) => (
-                <tr key={key} className="border-b last:border-0">
-                  <td className="py-3 font-medium text-gray-600 w-1/2">
-                    {labelMap[key] || key}
-                  </td>
-                  <td className="py-3 font-semibold">{value}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-[300px]">
+              <tbody>
+                {Object.entries(patientInfo).map(([key, value]) => (
+                  <tr key={key} className="border-b last:border-0">
+                    <td className="py-3 font-medium text-gray-600 w-1/2">
+                      {labelMap[key] || key}
+                    </td>
+                    <td className="py-3 font-semibold">{value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
@@ -296,31 +300,38 @@ export default function DiagnosisResult() {
           <h3 className="font-bold text-lg mb-4 text-teal-700 border-b pb-2">
             🧪 Chỉ số Xét nghiệm (OCR)
           </h3>
-          <table className="w-full text-sm">
-            <tbody>
-              {Object.entries(bloodTests).map(([key, value]) => (
-                <tr key={key} className="border-b last:border-0">
-                  <td className="py-3 font-medium text-gray-600 w-1/2">
-                    {labelMap[key] || key}
-                  </td>
-                  <td className="py-3 text-teal-700 font-bold">{value}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-[300px]">
+              <tbody>
+                {Object.entries(bloodTests).map(([key, value]) => (
+                  <tr key={key} className="border-b last:border-0">
+                    <td className="py-3 font-medium text-gray-600 w-1/2">
+                      {labelMap[key] || key}
+                    </td>
+                    <td className="py-3 text-teal-700 font-bold whitespace-nowrap">
+                      {value} 
+                      <span className="text-gray-500 text-xs font-normal ml-1">
+                        {units[key] || ""}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
       {/* ---------- BUTTON ------------ */}
-      <div className="text-center mt-8 space-x-4 pb-10">
-        <Link to="/" className="bg-gray-500 text-white px-6 py-3 rounded-lg">
+      <div className="text-center mt-8 space-x-4 pb-10 flex flex-col md:flex-row justify-center gap-4 md:gap-0">
+        <Link to="/" className="bg-gray-500 text-white px-6 py-3 rounded-lg w-full md:w-auto">
           ⬅ Hủy
         </Link>
 
         <button
           onClick={handleSaveToDB}
           disabled={isSaving}
-          className="bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700"
+          className="bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 w-full md:w-auto"
         >
           {isSaving ? "⏳ Đang lưu..." : "💾 Lưu vào MongoDB"}
         </button>
