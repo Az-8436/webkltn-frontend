@@ -688,7 +688,7 @@ export default function GlucoseHealth() {
   // --- LOGIC 2: TẢI DỮ LIỆU ---
   const fetchHistory = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/glucose/history");
+      const res = await fetch("http://webkltn-backend.onrender.com/api/glucose/history");
       const data = await res.json();
       // Format lại ngày tháng hiển thị cho gọn
       const formattedData = data.data.map(item => ({
@@ -710,7 +710,7 @@ export default function GlucoseHealth() {
     setAnalysisResult(result);
     setLoading(true);
     try {
-      await fetch("http://127.0.0.1:8000/api/glucose/add", {
+      await fetch("http://webkltn-backend.onrender.com/api/glucose/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -731,7 +731,7 @@ export default function GlucoseHealth() {
     setLoadingPred(true);
     setPredictionMsg(null);
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/predict/glucose", {
+      const res = await fetch("http://webkltn-backend.onrender.com/api/predict/glucose", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ measure_type: "fasting" }), 
@@ -890,7 +890,7 @@ function AIChatWidget({ currentGlucose, measureType }) {
       setIsTyping(true);
   
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/chat/advice", {
+        const res = await fetch("http://webkltn-backend.onrender.com/api/chat/advice", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
