@@ -221,7 +221,7 @@ export default function DiagnosisResult() {
         doctor_diagnosis: doctorNote,
       };
 
-      const res = await fetch("http://webkltn-backend.onrender.com/api/save-record", {
+      const res = await fetch("https://webkltn-backend.onrender.com/api/save-record", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(finalPayload),
