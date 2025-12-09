@@ -23,16 +23,17 @@ export default function MedicalRecords() {
       </div>
 
       <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
-        <table className="w-full text-left border-collapse">
-          <thead className="bg-gray-100 border-b-2 border-gray-200">
-            <tr>
-              <th className="p-4 text-sm font-bold text-gray-600 uppercase tracking-wider">Ngày khám</th>
-              <th className="p-4 text-sm font-bold text-gray-600 uppercase tracking-wider">Tên bệnh nhân</th>
-              <th className="p-4 text-sm font-bold text-gray-600 uppercase tracking-wider">AI Chẩn đoán</th>
-              <th className="p-4 text-sm font-bold text-gray-600 uppercase tracking-wider">Bác sĩ Nhận xét</th>
-              <th className="p-4 text-sm font-bold text-gray-600 uppercase tracking-wider text-center">Hành động</th> {/* 3. Thêm cột Hành động */}
-            </tr>
-          </thead>
+        <div className="overflow-x-auto"> 
+          <table className="w-full text-left border-collapse min-w-[750px]">
+            <thead className="bg-gray-100 border-b-2 border-gray-200">
+              <tr>
+                <th className="p-4 text-sm font-bold text-gray-600 uppercase tracking-wider">Ngày khám</th>
+                <th className="p-4 text-sm font-bold text-gray-600 uppercase tracking-wider">Tên bệnh nhân</th>
+                <th className="p-4 text-sm font-bold text-gray-600 uppercase tracking-wider">AI Chẩn đoán</th>
+                <th className="p-4 text-sm font-bold text-gray-600 uppercase tracking-wider">Bác sĩ Nhận xét</th>
+                <th className="p-4 text-sm font-bold text-gray-600 uppercase tracking-wider text-center">Hành động</th> {/* 3. Thêm cột Hành động */}
+              </tr>
+            </thead>
           <tbody className="divide-y divide-gray-100">
             {records.length > 0 ? (
               records.map((rec) => (
@@ -79,7 +80,8 @@ export default function MedicalRecords() {
               </tr>
             )}
           </tbody>
-        </table>
+         </table>
+        </div>
       </div>
     </div>
   );
