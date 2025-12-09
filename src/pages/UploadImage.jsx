@@ -65,7 +65,7 @@
 // //       const formData = new FormData();
 // //       formData.append("file", image);
 
-// //       const resOCR = await fetch("http://127.0.0.1:8000/ocr", {
+// //       const resOCR = await fetch("https://webkltn-backend.onrender.com/ocr", {
 // //         method: "POST",
 // //         body: formData,
 // //       });
@@ -146,7 +146,7 @@
 
 // //       console.log("📦 Payload gửi đi:", payload);
 
-// //       const resPredict = await fetch("http://127.0.0.1:8000/predict-disease", {
+// //       const resPredict = await fetch("https://webkltn-backend.onrender.com/predict-disease", {
 // //         method: 'POST',
 // //         body: JSON.stringify(payload),
 // //         headers: { 'Content-Type': 'application/json' }
@@ -400,7 +400,7 @@
 //       const formData = new FormData();
 //       formData.append("file", image);
 
-//       const resOCR = await fetch("http://127.0.0.1:8000/ocr", {
+//       const resOCR = await fetch("https://webkltn-backend.onrender.com/ocr", {
 //         method: "POST",
 //         body: formData,
 //       });
@@ -491,7 +491,7 @@
 
 //       console.log("📦 Payload gửi đi:", payload);
 
-//       const resPredict = await fetch("http://127.0.0.1:8000/predict-disease", {
+//       const resPredict = await fetch("https://webkltn-backend.onrender.com/predict-disease", {
 //         method: 'POST',
 //         body: JSON.stringify(payload),
 //         headers: { 'Content-Type': 'application/json' }
@@ -795,7 +795,7 @@
 //       const formData = new FormData();
 //       formData.append("file", image);
 
-//       const resOCR = await fetch("http://127.0.0.1:8000/ocr", {
+//       const resOCR = await fetch("https://webkltn-backend.onrender.com/ocr", {
 //         method: "POST",
 //         body: formData,
 //       });
@@ -893,7 +893,7 @@
 //         units: dataUnits // ✨ Gửi kèm đơn vị sang trang sau để hiển thị/lưu
 //       };
 
-//       const resPredict = await fetch("http://127.0.0.1:8000/predict-disease", {
+//       const resPredict = await fetch("https://webkltn-backend.onrender.com/predict-disease", {
 //         method: 'POST',
 //         body: JSON.stringify(payload),
 //         headers: { 'Content-Type': 'application/json' }
@@ -1112,7 +1112,7 @@ export default function UploadImage() {
       // LƯU Ý: Nếu bé chạy trên điện thoại qua Ngrok thì dùng link Ngrok hoặc IP máy tính
       // Nếu test local thì để localhost. Tốt nhất là dùng Relative Path nếu build chung
       // Hoặc để IP máy tính: http://192.168.1.xxx:8000/ocr
-      const resOCR = await fetch("http://127.0.0.1:8000/ocr", { 
+      const resOCR = await fetch("https://webkltn-backend.onrender.com/ocr", { 
         method: "POST",
         body: formData,
       });
@@ -1215,7 +1215,7 @@ export default function UploadImage() {
         units: dataUnits
       };
 
-      const resPredict = await fetch("http://127.0.0.1:8000/predict-disease", {
+      const resPredict = await fetch("https://webkltn-backend.onrender.com/predict-disease", {
         method: 'POST',
         body: JSON.stringify(payload),
         headers: { 'Content-Type': 'application/json' }
