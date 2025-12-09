@@ -1,6 +1,332 @@
 
 
 
+
+// // import { useState } from "react";
+// // import { useNavigate } from "react-router-dom";
+
+// // export default function UploadImage() {
+// //   const [image, setImage] = useState(null);
+// //   const [preview, setPreview] = useState("");
+// //   const [loading, setLoading] = useState(false);
+  
+// //   const [showInputForm, setShowInputForm] = useState(false);
+  
+// //   // State lưu dữ liệu bệnh nhân
+// //   const [patientData, setPatientData] = useState({
+// //     name: "", gender: "", age: "", height: "", weight: "",
+// //     systolicBloodPressure: "", diastolicBloodPressure: "", heartRate: "", bmi: ""
+// //   });
+  
+// //   // State lưu chỉ số máu
+// //   const [bloodTests, setBloodTests] = useState({
+// //     cholesterol: "", hdl: "", ldl: "", triglycerid: "", 
+// //     creatinin: "", hba1c: "", ure: "", vldl: ""
+// //   });
+
+// //   const navigate = useNavigate();
+
+// //   const bloodLabelMap = {
+// //     cholesterol: "Cholesterol",
+// //     hdl: "HDL-C",
+// //     ldl: "LDL-C",
+// //     triglycerid: "Triglycerid",
+// //     creatinin: "Creatinin",
+// //     hba1c: "HbA1c",
+// //     ure: "Ure",
+// //     vldl: "VLDL"
+// //   };
+
+// //   const handleUpload = (e) => {
+// //     const file = e.target.files[0];
+// //     if (file) {
+// //       setImage(file);
+// //       setPreview(URL.createObjectURL(file));
+// //       setShowInputForm(false);
+// //       setPatientData({});
+// //       setBloodTests({});
+// //     }
+// //   };
+
+// //   const handlePatientChange = (e) => {
+// //     setPatientData({ ...patientData, [e.target.name]: e.target.value });
+// //   };
+
+// //   const handleBloodChange = (e) => {
+// //     setBloodTests({ ...bloodTests, [e.target.name]: e.target.value });
+// //   };
+
+// //   // --- BƯỚC A: GỌI API OCR ---
+// //   const handleAnalyzeOCR = async () => {
+// //     if (!image) return alert("⚠️ Vui lòng chọn ảnh trước!");
+// //     setLoading(true);
+
+// //     try {
+// //       const formData = new FormData();
+// //       formData.append("file", image);
+
+// //       const resOCR = await fetch("http://127.0.0.1:8000/ocr", {
+// //         method: "POST",
+// //         body: formData,
+// //       });
+// //       const responseData = await resOCR.json();
+
+// //       if (responseData.status === "success") {
+// //         const pInfo = responseData.data.patient_info;
+// //         const bTests = responseData.data.blood_tests || {};
+
+// //         const newPatientData = {
+// //           name: pInfo.name || "",
+// //           gender: pInfo.gender || "",
+// //           age: pInfo.age || "",
+// //           height: pInfo.height || "",
+// //           weight: pInfo.weight || "",
+// //           systolicBloodPressure: pInfo.systolicBloodPressure || "",
+// //           diastolicBloodPressure: pInfo.diastolicBloodPressure || "",
+// //           heartRate: pInfo.heartRate || "",
+// //           bmi: pInfo.bmi || ""
+// //         };
+// //         setPatientData(newPatientData);
+
+// //         const newBloodTests = {
+// //           cholesterol: bTests.cholesterol || "",
+// //           hdl: bTests.hdl || "",
+// //           ldl: bTests.ldl || "",
+// //           triglycerid: bTests.triglycerid || "",
+// //           creatinin: bTests.creatinin || "",
+// //           hba1c: bTests.hba1c || "",
+// //           ure: bTests.ure || "",
+// //           vldl: bTests.vldl || ""
+// //         };
+// //         setBloodTests(newBloodTests);
+
+// //         // --- KIỂM TRA THIẾU DỮ LIỆU ---
+// //         const isPatientInfoMissing = 
+// //           !pInfo.name || !pInfo.age || 
+// //           !pInfo.gender || !pInfo.height || !pInfo.weight || 
+// //           !pInfo.systolicBloodPressure || !pInfo.diastolicBloodPressure || !pInfo.heartRate;
+
+// //         const requiredBloodKeys = ['cholesterol', 'hdl', 'ldl', 'triglycerid', 'creatinin', 'hba1c'];
+// //         const isBloodTestMissing = requiredBloodKeys.some(key => !bTests[key]);
+
+// //         if (isPatientInfoMissing || isBloodTestMissing) {
+// //           setShowInputForm(true);
+// //           setLoading(false);      
+// //         } else {
+// //           handlePredictDisease(newPatientData, newBloodTests);
+// //         }
+// //       } else {
+// //         alert("❌ Không đọc được dữ liệu từ ảnh!");
+// //         setLoading(false);
+// //       }
+// //     } catch (err) {
+// //       setLoading(false);
+// //       alert("❌ Lỗi server OCR!");
+// //       console.error(err);
+// //     }
+// //   };
+
+// //   // --- BƯỚC B: PREDICT ---
+// //   const handlePredictDisease = async (finalPatientData, finalBloodTests) => {
+// //     if (!loading) setLoading(true);
+
+// //     try {
+// //       // Vẫn tự động tính BMI để gửi đi (dù không hiện ô nhập)
+// //       let currentBMI = finalPatientData.bmi;
+// //       if (!currentBMI && finalPatientData.height && finalPatientData.weight) {
+// //         const h = parseFloat(finalPatientData.height) / 100;
+// //         const w = parseFloat(finalPatientData.weight);
+// //         currentBMI = (w / (h * h)).toFixed(2);
+// //       }
+
+// //       const payload = {
+// //         patient_info: { ...finalPatientData, bmi: currentBMI },
+// //         blood_tests: finalBloodTests || {}
+// //       };
+
+// //       console.log("📦 Payload gửi đi:", payload);
+
+// //       const resPredict = await fetch("http://127.0.0.1:8000/predict-disease", {
+// //         method: 'POST',
+// //         body: JSON.stringify(payload),
+// //         headers: { 'Content-Type': 'application/json' }
+// //       });
+// //       const predict_result = await resPredict.json();
+
+// //       setLoading(false);
+
+// //       navigate("/ket-qua-chan-doan", {
+// //         state: {
+// //           type: "Phân tích tổng hợp",
+// //           result: predict_result.data,
+// //           input: payload,
+// //         },
+// //       });
+
+// //     } catch (err) {
+// //       setLoading(false);
+// //       alert("❌ Lỗi dự đoán bệnh!");
+// //       console.error(err);
+// //     }
+// //   };
+
+// //   return (
+// //     <div className="w-full">
+      
+// //       {!showInputForm && (
+// //         <div className="space-y-4">
+// //           <div className="border-2 border-dashed border-indigo-300 p-8 rounded-xl text-center bg-indigo-50 hover:bg-indigo-100 transition cursor-pointer relative">
+// //              <input
+// //               type="file" accept="image/*" onChange={handleUpload} 
+// //               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+// //             />
+// //             <div className="flex flex-col items-center">
+// //                <span className="text-4xl mb-2">📸</span>
+// //                <p className="text-indigo-700 font-bold">Tải ảnh phiếu khám / huyết áp</p>
+// //                <p className="text-gray-500 text-sm">Hỗ trợ JPG, PNG</p>
+// //             </div>
+// //           </div>
+
+// //           {preview && (
+// //             <div className="flex justify-center">
+// //               <img src={preview} alt="preview" className="h-48 object-contain rounded-lg shadow-md bg-white border" />
+// //             </div>
+// //           )}
+
+// //           <button
+// //             onClick={handleAnalyzeOCR}
+// //             disabled={loading}
+// //             className={`w-full py-3 rounded-lg text-white font-bold transition ${
+// //               loading ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"
+// //             }`}
+// //           >
+// //             {loading ? "🔍 Đang phân tích..." : "🚀 Phân tích ảnh ngay"}
+// //           </button>
+// //         </div>
+// //       )}
+
+// //       {showInputForm && (
+// //         <div className="animate-fade-in space-y-6">
+// //           <div className="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400 text-yellow-800 text-sm">
+// //             ⚠️ <b>Thiếu thông tin!</b> AI chưa đọc được một số chỉ số. Vui lòng kiểm tra và nhập bổ sung:
+// //           </div>
+          
+// //           {/* --- KHU VỰC 1: THÔNG TIN CÁ NHÂN & SINH HIỆU --- */}
+// //           <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+// //             <h3 className="text-indigo-700 font-bold mb-3 flex items-center gap-2">
+// //               🧑‍⚕️ Thông tin & Sinh hiệu
+// //             </h3>
+// //             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+               
+// //                {/* 1. HỌ TÊN & TUỔI */}
+// //                <div className="md:col-span-2 grid grid-cols-3 gap-4">
+// //                   <div className="col-span-2">
+// //                     <label className="text-sm font-semibold text-gray-700">Họ và tên</label>
+// //                     <input 
+// //                       name="name" 
+// //                       type="text"
+// //                       placeholder="Nhập họ và tên..."
+// //                       value={patientData.name} 
+// //                       onChange={handlePatientChange}
+// //                       className={`w-full p-2 border rounded mt-1 ${!patientData.name ? 'border-yellow-300 bg-yellow-50' : 'border-gray-300'}`} 
+// //                     />
+// //                   </div>
+// //                   <div>
+// //                     <label className="text-sm font-semibold text-gray-700">Tuổi</label>
+// //                     <input 
+// //                       name="age"
+// //                       type="number"
+// //                       placeholder="Tuổi..."
+// //                       value={patientData.age} 
+// //                       onChange={handlePatientChange}
+// //                       className={`w-full p-2 border rounded mt-1 ${!patientData.age ? 'border-yellow-300 bg-yellow-50' : 'border-gray-300'}`} 
+// //                     />
+// //                   </div>
+// //                </div>
+
+// //                {/* 2. GIỚI TÍNH */}
+// //                <div className="md:col-span-2">
+// //                  <label className="text-sm font-semibold text-gray-700">Giới tính <span className="text-red-500">*</span></label>
+// //                  <select 
+// //                     name="gender" 
+// //                     value={patientData.gender} 
+// //                     onChange={handlePatientChange}
+// //                     className={`w-full p-2 border rounded mt-1 ${!patientData.gender ? 'border-red-300 ring-1 ring-red-200' : 'border-gray-300'}`}
+// //                  >
+// //                    <option value="">-- Chọn giới tính --</option>
+// //                    <option value="Nam">Nam</option>
+// //                    <option value="Nữ">Nữ</option>
+// //                  </select>
+// //                </div>
+
+// //                {/* 3. CÁC CHỈ SỐ SINH HIỆU KHÁC */}
+// //                <div className="grid grid-cols-2 gap-4 md:col-span-2">
+// //                  <div>
+// //                    <label className="text-xs font-bold text-gray-500 uppercase">Chiều cao (cm)</label>
+// //                    <input name="height" type="number" placeholder="VD: 165" value={patientData.height} onChange={handlePatientChange} className="w-full p-2 border rounded mt-1"/>
+// //                  </div>
+// //                  <div>
+// //                    <label className="text-xs font-bold text-gray-500 uppercase">Cân nặng (kg)</label>
+// //                    <input name="weight" type="number" placeholder="VD: 60" value={patientData.weight} onChange={handlePatientChange} className="w-full p-2 border rounded mt-1"/>
+// //                  </div>
+                 
+// //                  <div>
+// //                    <label className="text-xs font-bold text-gray-500 uppercase">HA Tâm Thu</label>
+// //                    <input name="systolicBloodPressure" type="number" placeholder="120" value={patientData.systolicBloodPressure} onChange={handlePatientChange} className="w-full p-2 border rounded mt-1"/>
+// //                  </div>
+// //                  <div>
+// //                    <label className="text-xs font-bold text-gray-500 uppercase">HA Tâm Trương</label>
+// //                    <input name="diastolicBloodPressure" type="number" placeholder="80" value={patientData.diastolicBloodPressure} onChange={handlePatientChange} className="w-full p-2 border rounded mt-1"/>
+// //                  </div>
+                 
+// //                  {/* Nhịp tim full width cho đẹp */}
+// //                  <div className="col-span-2">
+// //                    <label className="text-xs font-bold text-gray-500 uppercase">Nhịp tim</label>
+// //                    <input name="heartRate" type="number" placeholder="75" value={patientData.heartRate} onChange={handlePatientChange} className="w-full p-2 border rounded mt-1"/>
+// //                  </div>
+// //                </div>
+// //             </div>
+// //           </div>
+
+// //           {/* --- KHU VỰC 2: CHỈ SỐ XÉT NGHIỆM --- */}
+// //           <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+// //             <h3 className="text-indigo-700 font-bold mb-3 flex items-center gap-2">
+// //               🧪 Chỉ số xét nghiệm (Máu/Nước tiểu)
+// //             </h3>
+// //             <div className="grid grid-cols-2 gap-4">
+// //               {Object.keys(bloodLabelMap).map((key) => (
+// //                 <div key={key}>
+// //                   <label className="text-xs font-bold text-gray-500 uppercase">
+// //                     {bloodLabelMap[key]} { !bloodTests[key] && <span className="text-red-400 text-[10px]">(Thiếu)</span> }
+// //                   </label>
+// //                   <input 
+// //                     name={key} 
+// //                     type="number" 
+// //                     step="0.01"
+// //                     placeholder="Nhập số..."
+// //                     value={bloodTests[key]} 
+// //                     onChange={handleBloodChange} 
+// //                     className={`w-full p-2 border rounded mt-1 ${!bloodTests[key] ? 'border-yellow-300 bg-yellow-50' : 'border-gray-300'}`}
+// //                   />
+// //                 </div>
+// //               ))}
+// //             </div>
+// //           </div>
+
+// //           <button
+// //             onClick={() => handlePredictDisease(patientData, bloodTests)}
+// //             disabled={loading}
+// //             className="w-full py-3 rounded-lg text-white bg-green-600 hover:bg-green-700 font-bold shadow-lg transition"
+// //           >
+// //              {loading ? "🏥 Đang chẩn đoán..." : "✅ Hoàn tất & Xem kết quả"}
+// //           </button>
+// //         </div>
+// //       )}
+// //     </div>
+// //   );
+// // }
+//===============================================================================================================================
+
 // import { useState, useRef } from "react";
 // import { useNavigate } from "react-router-dom";
 
@@ -74,7 +400,7 @@
 //       const formData = new FormData();
 //       formData.append("file", image);
 
-//       const resOCR = await fetch("https://webkltn-backend.onrender.com/ocr", {
+//       const resOCR = await fetch("http://127.0.0.1:8000/ocr", {
 //         method: "POST",
 //         body: formData,
 //       });
@@ -165,7 +491,7 @@
 
 //       console.log("📦 Payload gửi đi:", payload);
 
-//       const resPredict = await fetch("https://webkltn-backend.onrender.com/predict-disease", {
+//       const resPredict = await fetch("http://127.0.0.1:8000/predict-disease", {
 //         method: 'POST',
 //         body: JSON.stringify(payload),
 //         headers: { 'Content-Type': 'application/json' }
@@ -352,6 +678,329 @@
 //   );
 // }
 
+// import { useState, useRef, useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { Camera, Upload, X } from "lucide-react";
+
+// export default function UploadImage() {
+//   const [image, setImage] = useState(null);
+//   const [preview, setPreview] = useState("");
+//   const [loading, setLoading] = useState(false);
+//   const [loadingText, setLoadingText] = useState("Đang xử lý...");
+  
+//   // --- STATE CHO CAMERA ---
+//   const [isCameraOpen, setIsCameraOpen] = useState(false);
+//   const videoRef = useRef(null);
+//   const streamRef = useRef(null);
+
+//   const [showInputForm, setShowInputForm] = useState(false);
+  
+//   const [patientData, setPatientData] = useState({
+//     name: "", gender: "", age: "", height: "", weight: "",
+//     systolicBloodPressure: "", diastolicBloodPressure: "", heartRate: "", bmi: ""
+//   });
+  
+//   // State lưu giá trị chỉ số
+//   const [bloodTests, setBloodTests] = useState({
+//     cholesterol: "", hdl: "", ldl: "", triglycerid: "", 
+//     creatinin: "", hba1c: "", ure: "", vldl: ""
+//   });
+
+//   // ✨ MỚI: State lưu đơn vị đo
+//   const [units, setUnits] = useState({
+//     cholesterol: "", hdl: "", ldl: "", triglycerid: "", 
+//     creatinin: "", hba1c: "", ure: "", vldl: ""
+//   });
+
+//   const navigate = useNavigate();
+//   const timerRef1 = useRef(null);
+//   const timerRef2 = useRef(null);
+
+//   const bloodLabelMap = {
+//     cholesterol: "Cholesterol", hdl: "HDL-C", ldl: "LDL-C",
+//     triglycerid: "Triglycerid", creatinin: "Creatinin", hba1c: "HbA1c", ure: "Ure", vldl: "VLDL"
+//   };
+
+//   const handleUpload = (e) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//       setImage(file);
+//       setPreview(URL.createObjectURL(file));
+//       setShowInputForm(false);
+//       setPatientData({});
+//       setBloodTests({});
+//       setUnits({});
+//     }
+//   };
+
+//   const startCamera = async () => {
+//     setIsCameraOpen(true);
+//     try {
+//       const stream = await navigator.mediaDevices.getUserMedia({ 
+//         video: { facingMode: "environment" }
+//       });
+//       streamRef.current = stream;
+//       if (videoRef.current) videoRef.current.srcObject = stream;
+//     } catch (err) {
+//       alert("Không thể mở camera: " + err.message);
+//       setIsCameraOpen(false);
+//     }
+//   };
+
+//   const stopCamera = () => {
+//     if (streamRef.current) streamRef.current.getTracks().forEach(track => track.stop());
+//     setIsCameraOpen(false);
+//   };
+
+//   const capturePhoto = () => {
+//     const video = videoRef.current;
+//     if (!video) return;
+//     const canvas = document.createElement("canvas");
+//     canvas.width = video.videoWidth;
+//     canvas.height = video.videoHeight;
+//     const ctx = canvas.getContext("2d");
+//     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+//     canvas.toBlob((blob) => {
+//       const file = new File([blob], "camera-capture.jpg", { type: "image/jpeg" });
+//       setImage(file);
+//       setPreview(URL.createObjectURL(file));
+//       setShowInputForm(false);
+//       setPatientData({});
+//       setBloodTests({});
+//       stopCamera();
+//     }, "image/jpeg", 0.9);
+//   };
+
+//   useEffect(() => {
+//     if (isCameraOpen && streamRef.current && videoRef.current) {
+//       videoRef.current.srcObject = streamRef.current;
+//     }
+//   }, [isCameraOpen]);
+
+//   const handlePatientChange = (e) => setPatientData({ ...patientData, [e.target.name]: e.target.value });
+//   const handleBloodChange = (e) => setBloodTests({ ...bloodTests, [e.target.name]: e.target.value });
+  
+//   // ✨ MỚI: Hàm xử lý thay đổi đơn vị
+//   const handleUnitChange = (e) => setUnits({ ...units, [e.target.name]: e.target.value });
+
+//   const handleAnalyzeOCR = async () => {
+//     if (!image) return alert("⚠️ Vui lòng chọn ảnh trước!");
+//     setLoading(true);
+//     setLoadingText("☁️ Đang gửi ảnh lên server...");
+
+//     timerRef1.current = setTimeout(() => setLoadingText("🤖 AI đang đọc dữ liệu phiếu khám..."), 2500);
+//     timerRef2.current = setTimeout(() => setLoadingText("🏥 Đang tổng hợp hồ sơ bệnh án..."), 5500);
+
+//     try {
+//       const formData = new FormData();
+//       formData.append("file", image);
+
+//       const resOCR = await fetch("http://127.0.0.1:8000/ocr", {
+//         method: "POST",
+//         body: formData,
+//       });
+//       const responseData = await resOCR.json();
+
+//       clearTimeout(timerRef1.current);
+//       clearTimeout(timerRef2.current);
+
+//       if (responseData.status === "success") {
+//         const pInfo = responseData.data.patient_info;
+//         const bTests = responseData.data.blood_tests || {};
+
+//         setPatientData({
+//           name: pInfo.name || "",
+//           gender: pInfo.gender || "",
+//           age: pInfo.age || "",
+//           height: pInfo.height || "",
+//           weight: pInfo.weight || "",
+//           systolicBloodPressure: pInfo.systolicBloodPressure || "",
+//           diastolicBloodPressure: pInfo.diastolicBloodPressure || "",
+//           heartRate: pInfo.heartRate || "",
+//           bmi: pInfo.bmi || ""
+//         });
+
+//         // ✨ LOGIC MỚI: Tách Value và Unit từ API
+//         const newValues = {};
+//         const newUnits = {};
+
+//         Object.keys(bloodLabelMap).forEach(key => {
+//             const item = bTests[key];
+//             if (item && typeof item === 'object') {
+//                 // Nếu API trả về dạng object { value, unit }
+//                 newValues[key] = item.value || "";
+//                 newUnits[key] = item.unit || "";
+//             } else {
+//                 // Nếu API trả về dạng số/chuỗi cũ (fallback)
+//                 newValues[key] = item || "";
+//                 newUnits[key] = ""; // Không có unit
+//             }
+//         });
+
+//         // Điền mặc định nếu thiếu Creatinin
+//         if (!newValues.creatinin) newValues.creatinin = "5.5";
+        
+//         setBloodTests(newValues);
+//         setUnits(newUnits);
+
+//         // Check thiếu dữ liệu
+//         const isMissing = !pInfo.name || !pInfo.age || !pInfo.gender || !pInfo.height || !pInfo.weight || 
+//                           !pInfo.systolicBloodPressure || !pInfo.diastolicBloodPressure || !pInfo.heartRate ||
+//                           !newValues.cholesterol; // Ví dụ check 1 trường
+
+//         if (isMissing) {
+//           setShowInputForm(true);
+//           setLoading(false);      
+//         } else {
+//           handlePredictDisease(newValues, newUnits, { ...pInfo, bmi: pInfo.bmi });
+//         }
+//       } else {
+//         alert("❌ Không đọc được dữ liệu!");
+//         setLoading(false);
+//       }
+//     } catch (err) {
+//       clearTimeout(timerRef1.current);
+//       clearTimeout(timerRef2.current);
+//       setLoading(false);
+//       console.error(err);
+//       alert("Lỗi OCR!");
+//     }
+//   };
+
+//   // Sửa hàm này nhận params thay vì đọc state trực tiếp để tránh stale closure
+//   const handlePredictDisease = async (finalValues, finalUnits, finalPatient) => {
+//     // Nếu gọi từ nút bấm (không tham số) thì lấy từ state
+//     const dataValues = finalValues || bloodTests;
+//     const dataUnits = finalUnits || units;
+//     const dataPatient = finalPatient || patientData;
+
+//     if (!loading) {
+//         setLoading(true);
+//         setLoadingText("🧠 AI đang chẩn đoán bệnh...");
+//     }
+
+//     try {
+//       let currentBMI = dataPatient.bmi;
+//       if (!currentBMI && dataPatient.height && dataPatient.weight) {
+//         const h = parseFloat(dataPatient.height) / 100;
+//         const w = parseFloat(dataPatient.weight);
+//         currentBMI = (w / (h * h)).toFixed(2);
+//       }
+
+//       const payload = {
+//         patient_info: { ...dataPatient, bmi: currentBMI },
+//         blood_tests: dataValues, // Gửi giá trị để AI dự đoán
+//         units: dataUnits // ✨ Gửi kèm đơn vị sang trang sau để hiển thị/lưu
+//       };
+
+//       const resPredict = await fetch("http://127.0.0.1:8000/predict-disease", {
+//         method: 'POST',
+//         body: JSON.stringify(payload),
+//         headers: { 'Content-Type': 'application/json' }
+//       });
+//       const predict_result = await resPredict.json();
+
+//       setLoading(false);
+
+//       navigate("/ket-qua-chan-doan", {
+//         state: {
+//           type: "Phân tích tổng hợp",
+//           result: predict_result.data,
+//           input: payload, // Payload giờ đã có units
+//         },
+//       });
+
+//     } catch (err) {
+//       setLoading(false);
+//       alert("❌ Lỗi dự đoán!");
+//     }
+//   };
+
+//   return (
+//     <div className="w-full relative">
+//       {/* CAMERA MODAL */}
+//       {isCameraOpen && (
+//         <div className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center">
+//           <div className="relative w-full h-full flex flex-col">
+//             <video ref={videoRef} autoPlay playsInline className="flex-1 object-cover w-full h-full"></video>
+//             <div className="absolute bottom-10 left-0 right-0 flex justify-center items-center gap-8 pb-4">
+//               <button onClick={stopCamera} className="bg-gray-600/80 text-white p-4 rounded-full"><X size={32} /></button>
+//               <button onClick={capturePhoto} className="bg-white p-1 rounded-full border-4 border-gray-300 shadow-xl"><div className="w-16 h-16 bg-red-600 rounded-full border-2 border-white"></div></button>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+
+//       {/* VIEW CHÍNH */}
+//       {!showInputForm && (
+//         <div className="space-y-4">
+//           <div className="grid grid-cols-1 gap-4">
+//             <div className="border-2 border-dashed border-indigo-300 p-6 rounded-xl text-center bg-indigo-50 hover:bg-indigo-100 transition cursor-pointer relative group">
+//                <input type="file" accept="image/*" onChange={handleUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+//               <div className="flex flex-col items-center text-indigo-600"><Upload size={32} className="mb-2"/><p className="font-bold">Tải ảnh</p></div>
+//             </div>
+//             <button onClick={startCamera} className="border-2 border-dashed border-pink-300 p-6 rounded-xl text-center bg-pink-50 hover:bg-pink-100 transition flex flex-col items-center text-pink-600"><Camera size={32} className="mb-2"/><p className="font-bold">Chụp ảnh</p></button>
+//           </div>
+//           {preview && <div className="flex flex-col items-center animate-fade-in"><img src={preview} alt="preview" className="h-64 object-contain rounded-lg shadow-md bg-white border" /></div>}
+//           {preview && <button onClick={handleAnalyzeOCR} disabled={loading} className="w-full py-3 rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 font-bold shadow-lg flex justify-center gap-2">{loading ? loadingText : "🚀 Phân tích ngay"}</button>}
+//         </div>
+//       )}
+
+//       {/* FORM NHẬP THÔNG TIN (Đã thêm cột đơn vị) */}
+//       {showInputForm && (
+//         <div className="animate-fade-in space-y-6">
+//           <div className="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400 text-yellow-800 text-sm">⚠️ Vui lòng kiểm tra và bổ sung thông tin:</div>
+          
+//           <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+//             <h3 className="text-indigo-700 font-bold mb-3 flex items-center gap-2">🧑‍⚕️ Thông tin & Sinh hiệu</h3>
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+//                 {/* ... (Phần nhập thông tin bệnh nhân giữ nguyên như cũ, bé tự copy lại phần input name, age, height, weight, huyết áp... vào đây cho gọn nha) ... */}
+//                 <div className="col-span-2"><label className="text-sm font-semibold">Họ tên</label><input name="name" value={patientData.name} onChange={handlePatientChange} className="w-full p-2 border rounded"/></div>
+//                 <div><label className="text-sm font-semibold">Tuổi</label><input name="age" type="number" value={patientData.age} onChange={handlePatientChange} className="w-full p-2 border rounded"/></div>
+//                 <div><label className="text-sm font-semibold">Giới tính</label><select name="gender" value={patientData.gender} onChange={handlePatientChange} className="w-full p-2 border rounded"><option value="">--</option><option value="Nam">Nam</option><option value="Nữ">Nữ</option></select></div>
+//                 <div><label className="text-xs font-bold text-gray-500 uppercase">Chiều cao (cm)</label><input name="height" type="number" value={patientData.height} onChange={handlePatientChange} className="w-full p-2 border rounded"/></div>
+//                 <div><label className="text-xs font-bold text-gray-500 uppercase">Cân nặng (kg)</label><input name="weight" type="number" value={patientData.weight} onChange={handlePatientChange} className="w-full p-2 border rounded"/></div>
+//                 <div><label className="text-xs font-bold text-gray-500 uppercase">HA Tâm Thu</label><input name="systolicBloodPressure" type="number" value={patientData.systolicBloodPressure} onChange={handlePatientChange} className="w-full p-2 border rounded"/></div>
+//                 <div><label className="text-xs font-bold text-gray-500 uppercase">HA Tâm Trương</label><input name="diastolicBloodPressure" type="number" value={patientData.diastolicBloodPressure} onChange={handlePatientChange} className="w-full p-2 border rounded"/></div>
+//                 <div className="col-span-2"><label className="text-xs font-bold text-gray-500 uppercase">Nhịp tim</label><input name="heartRate" type="number" value={patientData.heartRate} onChange={handlePatientChange} className="w-full p-2 border rounded"/></div>
+//             </div>
+//           </div>
+
+//           <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+//             <h3 className="text-indigo-700 font-bold mb-3 flex items-center gap-2">🧪 Chỉ số xét nghiệm</h3>
+//             {/* ✨ GRID 3 CỘT: Tên chỉ số - Giá trị - Đơn vị */}
+//             <div className="grid grid-cols-12 gap-2 text-xs font-bold text-gray-500 uppercase border-b pb-2 mb-2">
+//                 <div className="col-span-4">Tên chỉ số</div>
+//                 <div className="col-span-4">Giá trị</div>
+//                 <div className="col-span-4">Đơn vị</div>
+//             </div>
+//             <div className="space-y-3">
+//               {Object.keys(bloodLabelMap).map((key) => (
+//                 <div key={key} className="grid grid-cols-12 gap-2 items-center">
+//                   <label className="col-span-4 text-sm font-medium text-gray-700">
+//                     {bloodLabelMap[key]} { !bloodTests[key] && <span className="text-red-400 text-[10px]">*</span> }
+//                   </label>
+//                   <div className="col-span-4">
+//                     <input name={key} type="number" step="0.01" placeholder="0.0" value={bloodTests[key]} onChange={handleBloodChange} className="w-full p-2 border rounded"/>
+//                   </div>
+//                   <div className="col-span-4">
+//                     <input name={key} type="text" placeholder="VD: mmol/L" value={units[key]} onChange={handleUnitChange} className="w-full p-2 border rounded bg-gray-50 text-sm"/>
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+//           </div>
+
+//           <button onClick={() => handlePredictDisease(null, null, null)} disabled={loading} className="w-full py-3 rounded-lg text-white bg-green-600 hover:bg-green-700 font-bold shadow-lg transition flex justify-center items-center gap-2">
+//              {loading ? <span className="animate-pulse">Đang xử lý...</span> : "✅ Hoàn tất & Xem kết quả"}
+//           </button>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+//=============================================================================================================================
+//
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Camera, Upload, RefreshCw, ArrowRight } from "lucide-react";
@@ -463,7 +1112,7 @@ export default function UploadImage() {
       // LƯU Ý: Nếu bé chạy trên điện thoại qua Ngrok thì dùng link Ngrok hoặc IP máy tính
       // Nếu test local thì để localhost. Tốt nhất là dùng Relative Path nếu build chung
       // Hoặc để IP máy tính: http://192.168.1.xxx:8000/ocr
-      const resOCR = await fetch("https://webkltn-backend.onrender.com/ocr", { 
+      const resOCR = await fetch("http://127.0.0.1:8000/ocr", { 
         method: "POST",
         body: formData,
       });
@@ -566,7 +1215,7 @@ export default function UploadImage() {
         units: dataUnits
       };
 
-      const resPredict = await fetch("https://webkltn-backend.onrender.com/predict-disease", {
+      const resPredict = await fetch("http://127.0.0.1:8000/predict-disease", {
         method: 'POST',
         body: JSON.stringify(payload),
         headers: { 'Content-Type': 'application/json' }
@@ -639,7 +1288,7 @@ export default function UploadImage() {
         <div className="animate-fade-in space-y-6">
           <div className="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400 text-yellow-800 text-sm">⚠️ Vui lòng kiểm tra và bổ sung thông tin:</div>
           
-          <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+          {/* <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
             <h3 className="text-indigo-700 font-bold mb-3 flex items-center gap-2">🧑‍⚕️ Thông tin & Sinh hiệu</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="col-span-2"><label className="text-sm font-semibold">Họ tên</label><input name="name" value={patientData.name} onChange={handlePatientChange} className="w-full p-2 border rounded"/></div>
@@ -651,7 +1300,115 @@ export default function UploadImage() {
                 <div><label className="text-xs font-bold text-gray-500 uppercase">HA Tâm Trương</label><input name="diastolicBloodPressure" type="number" value={patientData.diastolicBloodPressure} onChange={handlePatientChange} className="w-full p-2 border rounded"/></div>
                 <div className="col-span-2"><label className="text-xs font-bold text-gray-500 uppercase">Nhịp tim</label><input name="heartRate" type="number" value={patientData.heartRate} onChange={handlePatientChange} className="w-full p-2 border rounded"/></div>
             </div>
+          </div> */}
+        <div className="bg-white p-4 md:p-6 lg:p-8 rounded-lg border border-gray-200 shadow-sm overflow-auto">
+          <h3 className="text-indigo-700 font-bold mb-4 flex items-center gap-2 text-base md:text-lg lg:text-xl">
+            🧑‍⚕️ Thông tin & Sinh hiệu
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            {/* Họ tên */}
+            <div className="col-span-1 md:col-span-2">
+              <label className="text-sm font-semibold">Họ tên</label>
+              <input
+                name="name"
+                value={patientData.name}
+                onChange={handlePatientChange}
+                className="w-full max-w-full p-2 border rounded"
+              />
+            </div>
+            
+            {/* Tuổi */}
+            <div className="col-span-1">
+              <label className="text-sm font-semibold">Tuổi</label>
+              <input
+                name="age"
+                type="number"
+                value={patientData.age}
+                onChange={handlePatientChange}
+                className="w-full max-w-full p-2 border rounded"
+              />
+            </div>
+            
+            {/* Giới tính */}
+            <div className="col-span-1">
+              <label className="text-sm font-semibold">Giới tính</label>
+              <select
+                name="gender"
+                value={patientData.gender}
+                onChange={handlePatientChange}
+                className="w-full max-w-full p-2 border rounded"
+              >
+                <option value="">--</option>
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+              </select>
+            </div>
+            
+            {/* Chiều cao */}
+            <div className="col-span-1">
+              <label className="text-xs font-bold text-gray-500 uppercase">Chiều cao (cm)</label>
+              <input
+                name="height"
+                type="number"
+                value={patientData.height}
+                onChange={handlePatientChange}
+                className="w-full max-w-full p-2 border rounded"
+              />
+            </div>
+            
+            {/* Cân nặng */}
+            <div className="col-span-1">
+              <label className="text-xs font-bold text-gray-500 uppercase">Cân nặng (kg)</label>
+              <input
+                name="weight"
+                type="number"
+                value={patientData.weight}
+                onChange={handlePatientChange}
+                className="w-full max-w-full p-2 border rounded"
+              />
+            </div>
+            
+            {/* HA Tâm Thu */}
+            <div className="col-span-1">
+              <label className="text-xs font-bold text-gray-500 uppercase">HA Tâm Thu</label>
+              <input
+                name="systolicBloodPressure"
+                type="number"
+                value={patientData.systolicBloodPressure}
+                onChange={handlePatientChange}
+                className="w-full max-w-full p-2 border rounded"
+              />
+            </div>
+            
+            {/* HA Tâm Trương */}
+            <div className="col-span-1">
+              <label className="text-xs font-bold text-gray-500 uppercase">HA Tâm Trương</label>
+              <input
+                name="diastolicBloodPressure"
+                type="number"
+                value={patientData.diastolicBloodPressure}
+                onChange={handlePatientChange}
+                className="w-full max-w-full p-2 border rounded"
+              />
+            </div>
+            
+            {/* Nhịp tim */}
+            <div className="col-span-1 md:col-span-2">
+              <label className="text-xs font-bold text-gray-500 uppercase">Nhịp tim</label>
+              <input
+                name="heartRate"
+                type="number"
+                value={patientData.heartRate}
+                onChange={handlePatientChange}
+                className="w-full max-w-full p-2 border rounded"
+              />
+            </div>
+            
           </div>
+        </div>
+
 
           <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
             <h3 className="text-indigo-700 font-bold mb-3 flex items-center gap-2">🧪 Chỉ số xét nghiệm</h3>
