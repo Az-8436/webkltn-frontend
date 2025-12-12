@@ -1,6 +1,7 @@
-import { useState } from "react";
+
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Camera, Upload, RefreshCw, ChevronRight } from "lucide-react";
+import { Camera, Upload, RefreshCw, ArrowRight, CheckCircle, ChevronRight } from "lucide-react";
 
 export default function UploadImage() {
   // --- STATE QUẢN LÝ ---
@@ -262,6 +263,7 @@ export default function UploadImage() {
           <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded text-blue-700">
              <h3 className="font-bold text-lg">📸 Chế độ xử lý hàng loạt</h3>
              <p>Bạn có thể chọn 1 hoặc nhiều ảnh (Tối đa 5 phiếu khám) để xử lý cùng lúc.</p>
+             
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -286,6 +288,9 @@ export default function UploadImage() {
 
           {files.length > 0 && (
             <div className="mt-6">
+              
+              {/* --- ĐÃ CHỈNH SỬA: PREVIEW ẢNH TO HƠN --- */}
+              {/* Mobile: 1 cột (to đùng), Tablet: 2 cột, PC: 3 cột */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
                 {filePreviews.map((src, index) => (
                   <div key={index} className="relative group aspect-[3/4] rounded-xl overflow-hidden border-2 border-gray-200 shadow-md">
@@ -315,7 +320,7 @@ export default function UploadImage() {
         </div>
       )}
 
-      {/* 2. REVIEW VIEW */}
+      {/* 2. REVIEW VIEW - Giữ nguyên */}
       {reviewIndex !== -1 && (
         <div className="animate-fade-in space-y-6">
           <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow border sticky top-0 z-20">
@@ -344,7 +349,7 @@ export default function UploadImage() {
                 <h3 className="text-indigo-700 font-bold mb-4 text-lg">🧑‍⚕️ Thông tin bệnh nhân</h3>
 
                 <div className="mb-4">
-                  <label className="text-sm font-bold text-red-600 uppercase whitespace-normal lg:whitespace-nowrap">
+                  <label className="text-sm font-bold text-red-600 uppercase whitespace-normal md:whitespace-nowrap">
                     Mã Hồ Sơ (ID)
                   </label>
                   <input
@@ -355,8 +360,9 @@ export default function UploadImage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-                  <div className="col-span-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                  <div className="sm:col-span-2">
                     <label className="block text-xs sm:text-sm font-semibold whitespace-normal md:whitespace-nowrap">
                       Họ tên
                     </label>
@@ -449,7 +455,7 @@ export default function UploadImage() {
                     />
                   </div>
 
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <label className="block text-xs sm:text-sm font-bold text-gray-500 whitespace-normal md:whitespace-nowrap">
                       Nhịp tim
                     </label>
@@ -461,47 +467,7 @@ export default function UploadImage() {
                       className="w-full p-2 border rounded"
                     />
                   </div>
-                </div>
-              </div>
 
-              <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
-                <h3 className="text-indigo-700 font-bold mb-3">🧪 Chỉ số xét nghiệm</h3>
-                <div className="space-y-4 md:space-y-3">
-                  {Object.keys(bloodLabelMap).map((key) => (
-                    <div
-                      key={key}
-                      className="flex flex-col md:grid md:grid-cols-12 gap-2 items-center border-b pb-2 last:border-0 min-w-0"
-                    >
-                      <label className="w-full md:col-span-3 text-sm font-bold text-gray-800 whitespace-normal lg:whitespace-nowrap min-w-[100px]">
-                        {bloodLabelMap[key]}
-                      </label>
-
-                      <div className="w-full md:col-span-3 text-xs text-gray-500 font-mono bg-gray-50 p-2 rounded">
-                        {getRawDisplay(key)}
-                      </div>
-
-                      <div className="w-full md:col-span-3">
-                        <input
-                          name={key}
-                          type="number"
-                          step="0.01"
-                          value={currentBlood[key] || ""}
-                          onChange={handleBloodChange}
-                          className="w-full p-2 border border-indigo-200 rounded text-center font-bold text-indigo-700"
-                        />
-                      </div>
-
-                      <div className="w-full md:col-span-3">
-                        <input
-                          name={key}
-                          type="text"
-                          value={currentUnits[key] || ""}
-                          onChange={handleUnitChange}
-                          className="w-full p-2 border rounded bg-gray-50 text-sm text-center"
-                        />
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </div>
             </div>
@@ -511,3 +477,4 @@ export default function UploadImage() {
     </div>
   );
 }
+
