@@ -1,7 +1,6 @@
-
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Camera, Upload, RefreshCw, ArrowRight, CheckCircle, ChevronRight } from "lucide-react";
+import { Camera, Upload, RefreshCw, ChevronRight } from "lucide-react";
 
 export default function UploadImage() {
   // --- STATE QUẢN LÝ ---
@@ -263,7 +262,6 @@ export default function UploadImage() {
           <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded text-blue-700">
              <h3 className="font-bold text-lg">📸 Chế độ xử lý hàng loạt</h3>
              <p>Bạn có thể chọn 1 hoặc nhiều ảnh (Tối đa 5 phiếu khám) để xử lý cùng lúc.</p>
-             
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -288,9 +286,6 @@ export default function UploadImage() {
 
           {files.length > 0 && (
             <div className="mt-6">
-              
-              {/* --- ĐÃ CHỈNH SỬA: PREVIEW ẢNH TO HƠN --- */}
-              {/* Mobile: 1 cột (to đùng), Tablet: 2 cột, PC: 3 cột */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
                 {filePreviews.map((src, index) => (
                   <div key={index} className="relative group aspect-[3/4] rounded-xl overflow-hidden border-2 border-gray-200 shadow-md">
@@ -320,7 +315,7 @@ export default function UploadImage() {
         </div>
       )}
 
-      {/* 2. REVIEW VIEW - Giữ nguyên */}
+      {/* 2. REVIEW VIEW */}
       {reviewIndex !== -1 && (
         <div className="animate-fade-in space-y-6">
           <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow border sticky top-0 z-20">
@@ -516,4 +511,3 @@ export default function UploadImage() {
     </div>
   );
 }
-
