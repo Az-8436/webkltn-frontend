@@ -199,7 +199,7 @@
 
 //   // 2. Gọi API lấy dữ liệu thật
 //   useEffect(() => {
-//     fetch("https://webkltn-backend.onrender.com/api/get-records")
+//     fetch("http://127.0.0.1:8000/api/get-records")
 //       .then((res) => res.json())
 //       .then((data) => {
 //         if (data.status === "success") {
@@ -334,6 +334,193 @@
 //   );
 // }
 
+
+
+//======================================================THEM PHAN DANG NHAP VOI QUYEN USER VA DOCTOR=====================================
+
+// import { useNavigate } from "react-router-dom";
+// import { useState, useEffect } from "react";
+
+// const filterByMode = (records, mode) => {
+//   const now = new Date();
+
+//   return records.filter((rec) => {
+//     const visitDate = new Date(rec.created_at);
+//     if (isNaN(visitDate)) return false;
+
+//     switch (mode) {
+//       case "day":
+//         return (
+//           visitDate.getDate() === now.getDate() &&
+//           visitDate.getMonth() === now.getMonth() &&
+//           visitDate.getFullYear() === now.getFullYear()
+//         );
+//       case "week": {
+//         const dayOfWeek = now.getDay() === 0 ? 6 : now.getDay() - 1;
+
+//         const startOfWeek = new Date(now);
+//         startOfWeek.setDate(now.getDate() - dayOfWeek);
+//         startOfWeek.setHours(0, 0, 0, 0);
+
+//         const endOfWeek = new Date(startOfWeek);
+//         endOfWeek.setDate(startOfWeek.getDate() + 6);
+//         endOfWeek.setHours(23, 59, 59, 999);
+
+//         return visitDate >= startOfWeek && visitDate <= endOfWeek;
+//       }
+//       case "month":
+//         return (
+//           visitDate.getMonth() === now.getMonth() &&
+//           visitDate.getFullYear() === now.getFullYear()
+//         );
+//       default:
+//         return true;
+//     }
+//   });
+// };
+
+// export default function History() {
+//   const navigate = useNavigate();
+//   const [records, setRecords] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [mode, setMode] = useState("all");
+//   const [search, setSearch] = useState("");
+//   const [filterType, setFilterType] = useState("all");
+
+//   useEffect(() => {
+//     fetch("http://127.0.0.1:8000/api/get-records")
+//       .then((res) => res.json())
+//       .then((data) => {
+//         if (data.status === "success") {
+//           setRecords(data.data);
+//         }
+//       })
+//       .catch((err) => console.error(err))
+//       .finally(() => setLoading(false));
+//   }, []);
+
+//   const filtered = filterByMode(records, mode)
+//     .filter((r) => {
+//       const name = r.patient_info?.name || "";
+//       return name.toLowerCase().includes(search.toLowerCase());
+//     })
+//     .filter((r) => {
+//       if (filterType === "all") return true;
+//       return r.ai_diagnosis?.includes(filterType);
+//     });
+
+//   return (
+//     <div className="p-6 space-y-6 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+
+//       {/* Header */}
+//       <div className="bg-white p-6 rounded-2xl shadow-md flex items-center justify-between border border-gray-200">
+//         <div>
+//           <h1 className="text-2xl font-black text-gray-900 flex items-center gap-2">
+//             📅 Lịch sử khám bệnh
+//           </h1>
+//           <p className="text-gray-500 text-sm">Lưu trữ – Tra cứu – Theo dõi bệnh nhân</p>
+//         </div>
+
+//         <span className="px-3 py-1 rounded-lg bg-indigo-50 text-indigo-700 font-bold text-xs border border-indigo-200">
+//           Tổng hồ sơ: {filtered.length}
+//         </span>
+//       </div>
+
+//       {/* Filters */}
+//       <div className="bg-white p-5 rounded-2xl shadow-md border border-gray-200 flex flex-col gap-4">
+
+//         <div className="flex gap-2 flex-wrap">
+//           {["all", "day", "week", "month"].map((m) => (
+//             <button key={m}
+//               onClick={() => setMode(m)}
+//               className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200
+//                 ${mode === m
+//                   ? "bg-indigo-600 text-white shadow-lg shadow-indigo-200"
+//                   : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+//                 }`}>
+//               {m === "all" ? "Tất cả"
+//                 : m === "day" ? "Hôm nay"
+//                   : m === "week" ? "Tuần này"
+//                     : "Tháng này"}
+//             </button>
+//           ))}
+
+//           <select
+//             value={filterType}
+//             onChange={(e) => setFilterType(e.target.value)}
+//             className="text-sm p-2 border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+//           >
+//             <option value="all">Tất cả bệnh</option>
+//             <option value="Tiểu đường">Tiểu đường</option>
+//             <option value="Không bị">Sức khỏe tốt</option>
+//           </select>
+//         </div>
+
+//         {/* Search */}
+//         <input
+//           type="text"
+//           placeholder="🔍 Tìm theo tên bệnh nhân..."
+//           className="border px-4 py-2 rounded-xl text-sm w-full focus:ring-2 border-gray-300 focus:ring-indigo-500"
+//           value={search}
+//           onChange={(e) => setSearch(e.target.value)}
+//         />
+//       </div>
+
+//       {/* Table */}
+//       <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+//         {loading ? (
+//           <p className="text-center py-12 text-gray-500">⏳ Đang tải dữ liệu...</p>
+//         ) : filtered.length === 0 ? (
+//           <div className="text-center py-12">
+//             <p className="text-gray-400 text-6xl mb-2">📭</p>
+//             <p className="text-gray-500 text-lg font-medium">
+//               Không có hồ sơ phù hợp
+//             </p>
+//           </div>
+//         ) : (
+//           <table className="w-full text-sm">
+//             <thead className="bg-gray-50 text-gray-600 uppercase text-xs font-bold">
+//               <tr>
+//                 <th className="p-3">Họ tên</th>
+//                 <th className="p-3">Ngày khám</th>
+//                 <th className="p-3">Kết quả AI</th>
+//                 <th className="p-3 text-right">Chi tiết</th>
+//               </tr>
+//             </thead>
+
+//             <tbody className="divide-y divide-gray-100">
+//               {filtered.map((r) => (
+//                 <tr key={r.id}
+//                   onClick={() => navigate(`/chi-tiet-ho-so`, { state: { record: r } })}
+//                   className="cursor-pointer hover:bg-indigo-50 transition group"
+//                 >
+//                   <td className="p-3 font-bold text-gray-800 group-hover:text-indigo-600">
+//                     {r.patient_info?.name}
+//                   </td>
+//                   <td className="p-3 text-gray-500">{r.created_at}</td>
+//                   <td className="p-3">
+//                     <span className={`px-2 py-1 rounded-lg text-xs font-bold
+//                       ${r.ai_diagnosis?.includes("Không bị")
+//                         ? "bg-green-100 text-green-700 border border-green-200"
+//                         : "bg-red-100 text-red-700 border border-red-200"}`}>
+//                       {r.ai_diagnosis}
+//                     </span>
+//                   </td>
+//                   <td className="p-3 text-right">
+//                     <button className="text-indigo-600 font-semibold hover:text-indigo-800 hover:underline">
+//                       Xem ➝
+//                     </button>
+//                   </td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
+
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -353,7 +540,6 @@ const filterByMode = (records, mode) => {
         );
       case "week": {
         const dayOfWeek = now.getDay() === 0 ? 6 : now.getDay() - 1;
-
         const startOfWeek = new Date(now);
         startOfWeek.setDate(now.getDate() - dayOfWeek);
         startOfWeek.setHours(0, 0, 0, 0);
@@ -388,7 +574,22 @@ export default function History() {
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "success") {
-          setRecords(data.data);
+          let fetchedRecords = data.data;
+
+          // --- ĐOẠN CODE XỬ LÝ QUYỀN ---
+          const role = localStorage.getItem("role");
+          const myId = localStorage.getItem("patientId"); // ID lấy lúc đăng nhập
+
+          // Nếu là admin (bệnh nhân) thì chỉ giữ lại hồ sơ của chính mình
+          if (role === "admin" && myId) {
+             fetchedRecords = fetchedRecords.filter(
+                (rec) => rec.patient_info?.id === myId
+             );
+          }
+          // Nếu là doctor thì không filter gì cả, xem hết
+          // -----------------------------
+
+          setRecords(fetchedRecords);
         }
       })
       .catch((err) => console.error(err))
@@ -407,14 +608,17 @@ export default function History() {
 
   return (
     <div className="p-6 space-y-6 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-
       {/* Header */}
       <div className="bg-white p-6 rounded-2xl shadow-md flex items-center justify-between border border-gray-200">
         <div>
           <h1 className="text-2xl font-black text-gray-900 flex items-center gap-2">
             📅 Lịch sử khám bệnh
           </h1>
-          <p className="text-gray-500 text-sm">Lưu trữ – Tra cứu – Theo dõi bệnh nhân</p>
+          <p className="text-gray-500 text-sm">
+            {localStorage.getItem("role") === "admin" 
+              ? "Hồ sơ sức khỏe cá nhân" 
+              : "Lưu trữ – Tra cứu – Theo dõi bệnh nhân"}
+          </p>
         </div>
 
         <span className="px-3 py-1 rounded-lg bg-indigo-50 text-indigo-700 font-bold text-xs border border-indigo-200">
@@ -424,20 +628,25 @@ export default function History() {
 
       {/* Filters */}
       <div className="bg-white p-5 rounded-2xl shadow-md border border-gray-200 flex flex-col gap-4">
-
         <div className="flex gap-2 flex-wrap">
           {["all", "day", "week", "month"].map((m) => (
-            <button key={m}
+            <button
+              key={m}
               onClick={() => setMode(m)}
               className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200
-                ${mode === m
-                  ? "bg-indigo-600 text-white shadow-lg shadow-indigo-200"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}>
-              {m === "all" ? "Tất cả"
-                : m === "day" ? "Hôm nay"
-                  : m === "week" ? "Tuần này"
-                    : "Tháng này"}
+                ${
+                  mode === m
+                    ? "bg-indigo-600 text-white shadow-lg shadow-indigo-200"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+            >
+              {m === "all"
+                ? "Tất cả"
+                : m === "day"
+                ? "Hôm nay"
+                : m === "week"
+                ? "Tuần này"
+                : "Tháng này"}
             </button>
           ))}
 
@@ -465,12 +674,14 @@ export default function History() {
       {/* Table */}
       <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
         {loading ? (
-          <p className="text-center py-12 text-gray-500">⏳ Đang tải dữ liệu...</p>
+          <p className="text-center py-12 text-gray-500">
+            ⏳ Đang tải dữ liệu...
+          </p>
         ) : filtered.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-400 text-6xl mb-2">📭</p>
             <p className="text-gray-500 text-lg font-medium">
-              Không có hồ sơ phù hợp
+              Không tìm thấy hồ sơ nào
             </p>
           </div>
         ) : (
@@ -478,6 +689,7 @@ export default function History() {
             <thead className="bg-gray-50 text-gray-600 uppercase text-xs font-bold">
               <tr>
                 <th className="p-3">Họ tên</th>
+                <th className="p-3">Mã HS</th> {/* Thêm cột Mã HS cho dễ nhìn */}
                 <th className="p-3">Ngày khám</th>
                 <th className="p-3">Kết quả AI</th>
                 <th className="p-3 text-right">Chi tiết</th>
@@ -486,19 +698,29 @@ export default function History() {
 
             <tbody className="divide-y divide-gray-100">
               {filtered.map((r) => (
-                <tr key={r.id}
-                  onClick={() => navigate(`/chi-tiet-ho-so`, { state: { record: r } })}
+                <tr
+                  key={r.id}
+                  onClick={() =>
+                    navigate(`/chi-tiet-ho-so`, { state: { record: r } })
+                  }
                   className="cursor-pointer hover:bg-indigo-50 transition group"
                 >
                   <td className="p-3 font-bold text-gray-800 group-hover:text-indigo-600">
                     {r.patient_info?.name}
                   </td>
+                  <td className="p-3 text-gray-500 italic">
+                    {r.patient_info?.id}
+                  </td>
                   <td className="p-3 text-gray-500">{r.created_at}</td>
                   <td className="p-3">
-                    <span className={`px-2 py-1 rounded-lg text-xs font-bold
-                      ${r.ai_diagnosis?.includes("Không bị")
-                        ? "bg-green-100 text-green-700 border border-green-200"
-                        : "bg-red-100 text-red-700 border border-red-200"}`}>
+                    <span
+                      className={`px-2 py-1 rounded-lg text-xs font-bold
+                      ${
+                        r.ai_diagnosis?.includes("Không bị")
+                          ? "bg-green-100 text-green-700 border border-green-200"
+                          : "bg-red-100 text-red-700 border border-red-200"
+                      }`}
+                    >
                       {r.ai_diagnosis}
                     </span>
                   </td>
