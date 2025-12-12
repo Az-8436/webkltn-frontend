@@ -685,54 +685,56 @@ export default function History() {
             </p>
           </div>
         ) : (
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-gray-600 uppercase text-xs font-bold">
-              <tr>
-                <th className="p-3">Họ tên</th>
-                <th className="p-3">Mã HS</th> {/* Thêm cột Mã HS cho dễ nhìn */}
-                <th className="p-3">Ngày khám</th>
-                <th className="p-3">Kết quả AI</th>
-                <th className="p-3 text-right">Chi tiết</th>
-              </tr>
-            </thead>
-
-            <tbody className="divide-y divide-gray-100">
-              {filtered.map((r) => (
-                <tr
-                  key={r.id}
-                  onClick={() =>
-                    navigate(`/chi-tiet-ho-so`, { state: { record: r } })
-                  }
-                  className="cursor-pointer hover:bg-indigo-50 transition group"
-                >
-                  <td className="p-3 font-bold text-gray-800 group-hover:text-indigo-600">
-                    {r.patient_info?.name}
-                  </td>
-                  <td className="p-3 text-gray-500 italic">
-                    {r.patient_info?.id}
-                  </td>
-                  <td className="p-3 text-gray-500">{r.created_at}</td>
-                  <td className="p-3">
-                    <span
-                      className={`px-2 py-1 rounded-lg text-xs font-bold
-                      ${
-                        r.ai_diagnosis?.includes("Không bị")
-                          ? "bg-green-100 text-green-700 border border-green-200"
-                          : "bg-red-100 text-red-700 border border-red-200"
-                      }`}
-                    >
-                      {r.ai_diagnosis}
-                    </span>
-                  </td>
-                  <td className="p-3 text-right">
-                    <button className="text-indigo-600 font-semibold hover:text-indigo-800 hover:underline">
-                      Xem ➝
-                    </button>
-                  </td>
+          <div className="overflow-x-auto w-full">
+            <table className="w-full text-sm">
+              <thead className="bg-gray-50 text-gray-600 uppercase text-xs font-bold">
+                <tr>
+                  <th className="p-3">Họ tên</th>
+                  <th className="p-3">Mã HS</th> {/* Thêm cột Mã HS cho dễ nhìn */}
+                  <th className="p-3">Ngày khám</th>
+                  <th className="p-3">Kết quả AI</th>
+                  <th className="p-3 text-right">Chi tiết</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody className="divide-y divide-gray-100">
+                {filtered.map((r) => (
+                  <tr
+                    key={r.id}
+                    onClick={() =>
+                      navigate(`/chi-tiet-ho-so`, { state: { record: r } })
+                    }
+                    className="cursor-pointer hover:bg-indigo-50 transition group"
+                  >
+                    <td className="p-3 font-bold text-gray-800 group-hover:text-indigo-600">
+                      {r.patient_info?.name}
+                    </td>
+                    <td className="p-3 text-gray-500 italic">
+                      {r.patient_info?.id}
+                    </td>
+                    <td className="p-3 text-gray-500">{r.created_at}</td>
+                    <td className="p-3">
+                      <span
+                        className={`px-2 py-1 rounded-lg text-xs font-bold
+                        ${
+                          r.ai_diagnosis?.includes("Không bị")
+                            ? "bg-green-100 text-green-700 border border-green-200"
+                            : "bg-red-100 text-red-700 border border-red-200"
+                        }`}
+                      >
+                        {r.ai_diagnosis}
+                      </span>
+                    </td>
+                    <td className="p-3 text-right">
+                      <button className="text-indigo-600 font-semibold hover:text-indigo-800 hover:underline">
+                        Xem ➝
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

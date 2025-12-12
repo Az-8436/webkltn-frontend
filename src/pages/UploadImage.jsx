@@ -1209,7 +1209,7 @@ export default function UploadImage() {
                         <input name="id" value={currentPatient.id || ""} onChange={handlePatientChange} className="w-full p-2 border border-red-200 bg-red-50 rounded font-mono font-bold text-red-700"/>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="col-span-2"><label className="text-sm font-semibold">Họ tên</label><input name="name" value={currentPatient.name || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/></div>
                         <div><label className="text-sm font-semibold">Tuổi</label><input name="age" type="number" value={currentPatient.age || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/></div>
                         <div><label className="text-sm font-semibold">Giới tính</label><select name="gender" value={currentPatient.gender || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"><option value="">--</option><option value="Nam">Nam</option><option value="Nữ">Nữ</option></select></div>
@@ -1218,7 +1218,115 @@ export default function UploadImage() {
                         <div><label className="text-xs font-bold text-gray-500 uppercase">HA Tâm Thu</label><input name="systolicBloodPressure" type="number" value={currentPatient.systolicBloodPressure || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/></div>
                         <div><label className="text-xs font-bold text-gray-500 uppercase">HA Tâm Trương</label><input name="diastolicBloodPressure" type="number" value={currentPatient.diastolicBloodPressure || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/></div>
                         <div className="col-span-2"><label className="text-xs font-bold text-gray-500 uppercase">Nhịp tim</label><input name="heartRate" type="number" value={currentPatient.heartRate || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/></div>
-                    </div>
+                    </div> */}
+                    <div className="bg-white p-4 md:p-6 lg:p-8 rounded-lg border border-gray-200 shadow-sm overflow-auto">
+                        <h3 className="text-indigo-700 font-bold mb-4 flex items-center gap-2 text-base md:text-lg lg:text-xl">
+                          🧑‍⚕️ Thông tin & Sinh hiệu
+                        </h3>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          
+                          {/* Họ tên */}
+                          <div className="col-span-1 md:col-span-2">
+                            <label className="text-sm font-semibold">Họ tên</label>
+                            <input
+                              name="name"
+                              value={patientData.name}
+                              onChange={handlePatientChange}
+                              className="w-full max-w-full p-2 border rounded"
+                            />
+                          </div>
+                          
+                          {/* Tuổi */}
+                          <div className="col-span-1">
+                            <label className="text-sm font-semibold">Tuổi</label>
+                            <input
+                              name="age"
+                              type="number"
+                              value={patientData.age}
+                              onChange={handlePatientChange}
+                              className="w-full max-w-full p-2 border rounded"
+                            />
+                          </div>
+                          
+                          {/* Giới tính */}
+                          <div className="col-span-1">
+                            <label className="text-sm font-semibold">Giới tính</label>
+                            <select
+                              name="gender"
+                              value={patientData.gender}
+                              onChange={handlePatientChange}
+                              className="w-full max-w-full p-2 border rounded"
+                            >
+                              <option value="">--</option>
+                              <option value="Nam">Nam</option>
+                              <option value="Nữ">Nữ</option>
+                            </select>
+                          </div>
+                          
+                          {/* Chiều cao */}
+                          <div className="col-span-1">
+                            <label className="text-xs font-bold text-gray-500 uppercase">Chiều cao (cm)</label>
+                            <input
+                              name="height"
+                              type="number"
+                              value={patientData.height}
+                              onChange={handlePatientChange}
+                              className="w-full max-w-full p-2 border rounded"
+                            />
+                          </div>
+                          
+                          {/* Cân nặng */}
+                          <div className="col-span-1">
+                            <label className="text-xs font-bold text-gray-500 uppercase">Cân nặng (kg)</label>
+                            <input
+                              name="weight"
+                              type="number"
+                              value={patientData.weight}
+                              onChange={handlePatientChange}
+                              className="w-full max-w-full p-2 border rounded"
+                            />
+                          </div>
+                          
+                          {/* HA Tâm Thu */}
+                          <div className="col-span-1">
+                            <label className="text-xs font-bold text-gray-500 uppercase">HA Tâm Thu</label>
+                            <input
+                              name="systolicBloodPressure"
+                              type="number"
+                              value={patientData.systolicBloodPressure}
+                              onChange={handlePatientChange}
+                              className="w-full max-w-full p-2 border rounded"
+                            />
+                          </div>
+                          
+                          {/* HA Tâm Trương */}
+                          <div className="col-span-1">
+                            <label className="text-xs font-bold text-gray-500 uppercase">HA Tâm Trương</label>
+                            <input
+                              name="diastolicBloodPressure"
+                              type="number"
+                              value={patientData.diastolicBloodPressure}
+                              onChange={handlePatientChange}
+                              className="w-full max-w-full p-2 border rounded"
+                            />
+                          </div>
+                          
+                          {/* Nhịp tim */}
+                          <div className="col-span-1 md:col-span-2">
+                            <label className="text-xs font-bold text-gray-500 uppercase">Nhịp tim</label>
+                            <input
+                              name="heartRate"
+                              type="number"
+                              value={patientData.heartRate}
+                              onChange={handlePatientChange}
+                              className="w-full max-w-full p-2 border rounded"
+                            />
+                          </div>
+                          
+                        </div>
+                      </div> 
+
                   </div>
 
                   <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
