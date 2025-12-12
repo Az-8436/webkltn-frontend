@@ -342,58 +342,58 @@ export default function UploadImage() {
 
               <div className="lg:col-span-2 space-y-6 pb-20">
                   <div className="bg-white p-4 md:p-6 rounded-lg border border-gray-200 shadow-sm">
-                    <h3 className="text-indigo-700 font-bold mb-4 text-lg">🧑‍⚕️ Thông tin bệnh nhân</h3>
-                    
-                    <div className="mb-4">
-                        <label className="text-sm font-bold text-red-600 uppercase">Mã Hồ Sơ (ID)</label>
-                        <input name="id" value={currentPatient.id || ""} onChange={handlePatientChange} className="w-full p-2 border border-red-200 bg-red-50 rounded font-mono font-bold text-red-700"/>
-                    </div>
+                      <h3 className="text-indigo-700 font-bold mb-4 text-lg">🧑‍⚕️ Thông tin bệnh nhân</h3>
+                                      
+                      <div className="mb-4">
+                          <label className="text-sm font-bold text-red-600 uppercase">Mã Hồ Sơ (ID)</label>
+                          <input name="id" value={currentPatient.id || ""} onChange={handlePatientChange} className="w-full p-2 border border-red-200 bg-red-50 rounded font-mono font-bold text-red-700"/>
+                      </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-                        <div className="col-span-2">
-                            <label className="text-xs sm:text-sm font-semibold break-words">Họ tên</label>
-                            <input name="name" value={currentPatient.name || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
-                        </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
+                          <div className="col-span-2">
+                              <label className="text-xs sm:text-sm font-semibold break-words">Họ tên</label>
+                              <input name="name" value={currentPatient.name || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
+                          </div>
 
-                        <div>
-                            <label className="text-xs sm:text-sm font-semibold break-words">Tuổi</label>
-                            <input name="age" type="number" value={currentPatient.age || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
-                        </div>
+                          <div>
+                              <label className="text-xs sm:text-sm font-semibold break-words">Tuổi</label>
+                              <input name="age" type="number" value={currentPatient.age || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
+                          </div>
 
-                        <div>
-                            <label className="text-xs sm:text-sm font-semibold break-words">Giới tính</label>
-                            <select name="gender" value={currentPatient.gender || ""} onChange={handlePatientChange} className="w-full p-2 border rounded">
-                                <option value="">--</option>
-                                <option value="Nam">Nam</option>
-                                <option value="Nữ">Nữ</option>
-                            </select>
-                        </div>
+                          <div>
+                              <label className="text-xs sm:text-sm font-semibold break-words">Giới tính</label>
+                              <select name="gender" value={currentPatient.gender || ""} onChange={handlePatientChange} className="w-full p-2 border rounded">
+                                  <option value="">--</option>
+                                  <option value="Nam">Nam</option>
+                                  <option value="Nữ">Nữ</option>
+                              </select>
+                          </div>
 
-                        <div>
-                            <label className="text-xs sm:text-sm font-bold text-gray-500 uppercase break-words">Chiều cao (cm)</label>
-                            <input name="height" type="number" value={currentPatient.height || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
-                        </div>
+                          <div>
+                              <label className="text-xs sm:text-sm font-bold text-gray-500 break-words">Chiều cao (cm)</label>
+                              <input name="height" type="number" value={currentPatient.height || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
+                          </div>
 
-                        <div>
-                            <label className="text-xs sm:text-sm font-bold text-gray-500 uppercase break-words">Cân nặng (kg)</label>
-                            <input name="weight" type="number" value={currentPatient.weight || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
-                        </div>
+                          <div>
+                              <label className="text-xs sm:text-sm font-bold text-gray-500 break-words">Cân nặng (kg)</label>
+                              <input name="weight" type="number" value={currentPatient.weight || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
+                          </div>
 
-                        <div>
-                            <label className="text-xs sm:text-sm font-bold text-gray-500 uppercase break-words">HA Tâm Thu</label>
-                            <input name="systolicBloodPressure" type="number" value={currentPatient.systolicBloodPressure || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
-                        </div>
+                          <div>
+                              <label className="text-xs sm:text-sm font-bold text-gray-500 break-words">HA Tâm Thu</label>
+                              <input name="systolicBloodPressure" type="number" value={currentPatient.systolicBloodPressure || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
+                          </div>
 
-                        <div>
-                            <label className="text-xs sm:text-sm font-bold text-gray-500 uppercase break-words">HA Tâm Trương</label>
-                            <input name="diastolicBloodPressure" type="number" value={currentPatient.diastolicBloodPressure || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
-                        </div>
+                          <div>
+                              <label className="text-xs sm:text-sm font-bold text-gray-500 break-words">HA Tâm Trương</label>
+                              <input name="diastolicBloodPressure" type="number" value={currentPatient.diastolicBloodPressure || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
+                          </div>
 
-                        <div className="col-span-2">
-                            <label className="text-xs sm:text-sm font-bold text-gray-500 uppercase break-words">Nhịp tim</label>
-                            <input name="heartRate" type="number" value={currentPatient.heartRate || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
-                        </div>
-                    </div>
+                          <div className="col-span-2">
+                              <label className="text-xs sm:text-sm font-bold text-gray-500 break-words">Nhịp tim</label>
+                              <input name="heartRate" type="number" value={currentPatient.heartRate || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
+                          </div>
+                      </div>
                   </div>
 
                   <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
