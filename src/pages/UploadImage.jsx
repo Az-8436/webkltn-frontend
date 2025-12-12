@@ -83,17 +83,30 @@ export default function UploadImage() {
     return null;
   };
 
+// --- CẬP NHẬT: HÀM UPLOAD (CỘNG DỒN ẢNH) ---
   const handleUpload = (e) => {
     const selectedFiles = Array.from(e.target.files);
+    
     if (selectedFiles.length > 0) {
-      setFiles(selectedFiles);
+      // Thêm ảnh mới vào danh sách cũ thay vì ghi đè
+      setFiles(prev => [...prev, ...selectedFiles]);
       
-      const previews = selectedFiles.map(file => URL.createObjectURL(file));
-      setFilePreviews(previews);
+      const newPreviews = selectedFiles.map(file => URL.createObjectURL(file));
+      setFilePreviews(prev => [...prev, ...newPreviews]);
 
+      // Reset kết quả phân tích cũ để người dùng phân tích lại từ đầu
       setAnalyzedData([]); 
       setReviewIndex(-1);
     }
+    // Reset giá trị input để có thể chọn lại cùng 1 file nếu muốn
+    e.target.value = "";
+  };
+
+  // --- MỚI: HÀM XÓA 1 ẢNH KHỎI DANH SÁCH ---
+  const handleRemoveImage = (indexToRemove) => {
+    setFiles(prev => prev.filter((_, i) => i !== indexToRemove));
+    setFilePreviews(prev => prev.filter((_, i) => i !== indexToRemove));
+    setAnalyzedData([]); // Reset kết quả nếu danh sách ảnh thay đổi
   };
 
   const handleAnalyzeBatch = async () => {
@@ -116,7 +129,7 @@ export default function UploadImage() {
             const formData = new FormData();
             formData.append("file", file);
             
-            const resOCR = await fetch("https://webkltn-backend.onrender.com/ocr", { 
+            const resOCR = await fetch("http://127.0.0.1:8000/ocr", { 
                 method: "POST", 
                 body: formData 
             });
@@ -255,8 +268,7 @@ export default function UploadImage() {
   };
 
   return (
-    <div className="w-full relative min-h-screen pb-20">
-      
+    <div className="w-full relative min-h-screen pb-20">      
       {/* 1. UPLOAD VIEW */}
       {reviewIndex === -1 && (
         <div className="space-y-6">
