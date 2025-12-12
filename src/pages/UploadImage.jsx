@@ -129,7 +129,7 @@ export default function UploadImage() {
             const formData = new FormData();
             formData.append("file", file);
             
-            const resOCR = await fetch("http://127.0.0.1:8000/ocr", { 
+            const resOCR = await fetch("https://webkltn-backend.onrender.com/ocr", { 
                 method: "POST", 
                 body: formData 
             });
