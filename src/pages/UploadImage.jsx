@@ -323,7 +323,7 @@ export default function UploadImage() {
       {/* 2. REVIEW VIEW - Giữ nguyên */}
       {reviewIndex !== -1 && (
         <div className="animate-fade-in space-y-6">
-           <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow border sticky top-0 z-20">
+          <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow border sticky top-0 z-20">
                <div>
                    <h2 className="text-xl font-bold text-indigo-800">📝 Duyệt phiếu {reviewIndex + 1}/{analyzedData.length}</h2>
                    <p className="text-sm text-gray-500">ID: {currentPatient.id}</p>
@@ -331,92 +331,186 @@ export default function UploadImage() {
                <button onClick={handleNextReview} className="bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-700 flex items-center gap-2 shadow-md">
                    {reviewIndex < analyzedData.length - 1 ? "Tiếp theo" : "Hoàn tất"} <ChevronRight/>
                </button>
-           </div>
+          </div>
 
-           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-1">
-                  <div className="sticky top-24 bg-gray-100 rounded-lg overflow-hidden border shadow-inner">
-                      <img src={analyzedData[reviewIndex].preview} alt="preview" className="w-full object-contain max-h-[80vh]" />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-1">
+              <div className="sticky top-24 bg-gray-100 rounded-lg overflow-hidden border shadow-inner">
+                <img
+                  src={analyzedData[reviewIndex].preview}
+                  alt="preview"
+                  className="w-full object-contain max-h-[80vh]"
+                />
+              </div>
+            </div>
+
+            <div className="lg:col-span-2 space-y-6 pb-20">
+              <div className="bg-white p-4 md:p-6 rounded-lg border border-gray-200 shadow-sm">
+                <h3 className="text-indigo-700 font-bold mb-4 text-lg">🧑‍⚕️ Thông tin bệnh nhân</h3>
+
+                <div className="mb-4">
+                  <label className="text-sm font-bold text-red-600 uppercase whitespace-nowrap">
+                    Mã Hồ Sơ (ID)
+                  </label>
+                  <input
+                    name="id"
+                    value={currentPatient.id || ""}
+                    onChange={handlePatientChange}
+                    className="w-full p-2 border border-red-200 bg-red-50 rounded font-mono font-bold text-red-700"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
+                  <div className="col-span-2">
+                    <label className="text-xs sm:text-sm font-semibold whitespace-nowrap">
+                      Họ tên
+                    </label>
+                    <input
+                      name="name"
+                      value={currentPatient.name || ""}
+                      onChange={handlePatientChange}
+                      className="w-full p-2 border rounded"
+                    />
                   </div>
+
+                  <div>
+                    <label className="text-xs sm:text-sm font-semibold whitespace-nowrap">
+                      Tuổi
+                    </label>
+                    <input
+                      name="age"
+                      type="number"
+                      value={currentPatient.age || ""}
+                      onChange={handlePatientChange}
+                      className="w-full p-2 border rounded"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs sm:text-sm font-semibold whitespace-nowrap">
+                      Giới tính
+                    </label>
+                    <select
+                      name="gender"
+                      value={currentPatient.gender || ""}
+                      onChange={handlePatientChange}
+                      className="w-full p-2 border rounded"
+                    >
+                      <option value="">--</option>
+                      <option value="Nam">Nam</option>
+                      <option value="Nữ">Nữ</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="text-xs sm:text-sm font-bold text-gray-500 whitespace-nowrap">
+                      Chiều cao (cm)
+                    </label>
+                    <input
+                      name="height"
+                      type="number"
+                      value={currentPatient.height || ""}
+                      onChange={handlePatientChange}
+                      className="w-full p-2 border rounded"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs sm:text-sm font-bold text-gray-500 whitespace-nowrap">
+                      Cân nặng (kg)
+                    </label>
+                    <input
+                      name="weight"
+                      type="number"
+                      value={currentPatient.weight || ""}
+                      onChange={handlePatientChange}
+                      className="w-full p-2 border rounded"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs sm:text-sm font-bold text-gray-500 whitespace-nowrap">
+                      HA Tâm Thu
+                    </label>
+                    <input
+                      name="systolicBloodPressure"
+                      type="number"
+                      value={currentPatient.systolicBloodPressure || ""}
+                      onChange={handlePatientChange}
+                      className="w-full p-2 border rounded"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs sm:text-sm font-bold text-gray-500 whitespace-nowrap">
+                      HA Tâm Trương
+                    </label>
+                    <input
+                      name="diastolicBloodPressure"
+                      type="number"
+                      value={currentPatient.diastolicBloodPressure || ""}
+                      onChange={handlePatientChange}
+                      className="w-full p-2 border rounded"
+                    />
+                  </div>
+
+                  <div className="col-span-2">
+                    <label className="text-xs sm:text-sm font-bold text-gray-500 whitespace-nowrap">
+                      Nhịp tim
+                    </label>
+                    <input
+                      name="heartRate"
+                      type="number"
+                      value={currentPatient.heartRate || ""}
+                      onChange={handlePatientChange}
+                      className="w-full p-2 border rounded"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="lg:col-span-2 space-y-6 pb-20">
-                  <div className="bg-white p-4 md:p-6 rounded-lg border border-gray-200 shadow-sm">
-                      <h3 className="text-indigo-700 font-bold mb-4 text-lg">🧑‍⚕️ Thông tin bệnh nhân</h3>
-                                      
-                      <div className="mb-4">
-                          <label className="text-sm font-bold text-red-600 uppercase">Mã Hồ Sơ (ID)</label>
-                          <input name="id" value={currentPatient.id || ""} onChange={handlePatientChange} className="w-full p-2 border border-red-200 bg-red-50 rounded font-mono font-bold text-red-700"/>
+              <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                <h3 className="text-indigo-700 font-bold mb-3">🧪 Chỉ số xét nghiệm</h3>
+                <div className="space-y-4 md:space-y-3">
+                  {Object.keys(bloodLabelMap).map((key) => (
+                    <div
+                      key={key}
+                      className="flex flex-col md:grid md:grid-cols-12 gap-2 items-center border-b pb-2 last:border-0 min-w-0"
+                    >
+                      <label className="w-full md:col-span-3 text-sm font-bold text-gray-800 whitespace-nowrap min-w-[100px]">
+                        {bloodLabelMap[key]}
+                      </label>
+
+                      <div className="w-full md:col-span-3 text-xs text-gray-500 font-mono bg-gray-50 p-2 rounded">
+                        {getRawDisplay(key)}
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-                          <div className="col-span-2">
-                              <label className="text-xs sm:text-sm font-semibold break-words">Họ tên</label>
-                              <input name="name" value={currentPatient.name || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
-                          </div>
-
-                          <div>
-                              <label className="text-xs sm:text-sm font-semibold break-words">Tuổi</label>
-                              <input name="age" type="number" value={currentPatient.age || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
-                          </div>
-
-                          <div>
-                              <label className="text-xs sm:text-sm font-semibold break-words">Giới tính</label>
-                              <select name="gender" value={currentPatient.gender || ""} onChange={handlePatientChange} className="w-full p-2 border rounded">
-                                  <option value="">--</option>
-                                  <option value="Nam">Nam</option>
-                                  <option value="Nữ">Nữ</option>
-                              </select>
-                          </div>
-
-                          <div>
-                              <label className="text-xs sm:text-sm font-bold text-gray-500 break-words">Chiều cao (cm)</label>
-                              <input name="height" type="number" value={currentPatient.height || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
-                          </div>
-
-                          <div>
-                              <label className="text-xs sm:text-sm font-bold text-gray-500 break-words">Cân nặng (kg)</label>
-                              <input name="weight" type="number" value={currentPatient.weight || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
-                          </div>
-
-                          <div>
-                              <label className="text-xs sm:text-sm font-bold text-gray-500 break-words">HA Tâm Thu</label>
-                              <input name="systolicBloodPressure" type="number" value={currentPatient.systolicBloodPressure || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
-                          </div>
-
-                          <div>
-                              <label className="text-xs sm:text-sm font-bold text-gray-500 break-words">HA Tâm Trương</label>
-                              <input name="diastolicBloodPressure" type="number" value={currentPatient.diastolicBloodPressure || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
-                          </div>
-
-                          <div className="col-span-2">
-                              <label className="text-xs sm:text-sm font-bold text-gray-500 break-words">Nhịp tim</label>
-                              <input name="heartRate" type="number" value={currentPatient.heartRate || ""} onChange={handlePatientChange} className="w-full p-2 border rounded"/>
-                          </div>
+                      <div className="w-full md:col-span-3">
+                        <input
+                          name={key}
+                          type="number"
+                          step="0.01"
+                          value={currentBlood[key] || ""}
+                          onChange={handleBloodChange}
+                          className="w-full p-2 border border-indigo-200 rounded text-center font-bold text-indigo-700"
+                        />
                       </div>
-                  </div>
 
-                  <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
-                     <h3 className="text-indigo-700 font-bold mb-3">🧪 Chỉ số xét nghiệm</h3>
-                     <div className="space-y-4 md:space-y-3">
-                        {Object.keys(bloodLabelMap).map((key) => (
-                           <div key={key} className="flex flex-col md:grid md:grid-cols-12 gap-2 items-center border-b pb-2 last:border-0">
-                              <label className="w-full md:col-span-3 text-sm font-bold text-gray-800">{bloodLabelMap[key]}</label>
-                              <div className="w-full md:col-span-3 text-xs text-gray-500 font-mono bg-gray-50 p-2 rounded">
-                                  {getRawDisplay(key)}
-                              </div>
-                              <div className="w-full md:col-span-3">
-                                  <input name={key} type="number" step="0.01" value={currentBlood[key] || ""} onChange={handleBloodChange} className="w-full p-2 border border-indigo-200 rounded text-center font-bold text-indigo-700"/>
-                              </div>
-                              <div className="w-full md:col-span-3">
-                                  <input name={key} type="text" value={currentUnits[key] || ""} onChange={handleUnitChange} className="w-full p-2 border rounded bg-gray-50 text-sm text-center"/>
-                              </div>
-                           </div>
-                        ))}
-                     </div>
-                  </div>
+                      <div className="w-full md:col-span-3">
+                        <input
+                          name={key}
+                          type="text"
+                          value={currentUnits[key] || ""}
+                          onChange={handleUnitChange}
+                          className="w-full p-2 border rounded bg-gray-50 text-sm text-center"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-           </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
