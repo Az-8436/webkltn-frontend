@@ -1327,7 +1327,7 @@ export default function UploadImage() {
                         </div>
                       </div> 
 
-                  </div>
+                    </div>
 
                   <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
                      <h3 className="text-indigo-700 font-bold mb-3">🧪 Chỉ số xét nghiệm</h3>
