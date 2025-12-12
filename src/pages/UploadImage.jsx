@@ -362,7 +362,7 @@ export default function UploadImage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
                   <div className="col-span-2">
-                    <label className="text-xs sm:text-sm font-semibold whitespace-normal md:whitespace-nowrap">
+                    <label className="block text-xs sm:text-sm font-semibold whitespace-normal md:whitespace-nowrap">
                       Họ tên
                     </label>
                     <input
@@ -374,7 +374,7 @@ export default function UploadImage() {
                   </div>
 
                   <div>
-                    <label className="text-xs sm:text-sm font-semibold whitespace-normal md:whitespace-nowrap">
+                    <label className="block text-xs sm:text-sm font-semibold whitespace-normal md:whitespace-nowrap">
                       Tuổi
                     </label>
                     <input
@@ -387,7 +387,7 @@ export default function UploadImage() {
                   </div>
 
                   <div>
-                    <label className="text-xs sm:text-sm font-semibold whitespace-normal md:whitespace-nowrap">
+                    <label className="block text-xs sm:text-sm font-semibold whitespace-normal md:whitespace-nowrap">
                       Giới tính
                     </label>
                     <select
@@ -403,7 +403,7 @@ export default function UploadImage() {
                   </div>
 
                   <div>
-                    <label className="text-xs sm:text-sm font-bold text-gray-500 whitespace-normal md:whitespace-nowrap">
+                    <label className="block text-xs sm:text-sm font-bold text-gray-500 whitespace-normal md:whitespace-nowrap">
                       Chiều cao (cm)
                     </label>
                     <input
@@ -416,7 +416,7 @@ export default function UploadImage() {
                   </div>
 
                   <div>
-                    <label className="text-xs sm:text-sm font-bold text-gray-500 whitespace-normal md:whitespace-nowrap">
+                    <label className="block text-xs sm:text-sm font-bold text-gray-500 whitespace-normal md:whitespace-nowrap">
                       Cân nặng (kg)
                     </label>
                     <input
@@ -429,7 +429,7 @@ export default function UploadImage() {
                   </div>
 
                   <div>
-                    <label className="text-xs sm:text-sm font-bold text-gray-500 whitespace-normal md:whitespace-nowrap">
+                    <label className="block text-xs sm:text-sm font-bold text-gray-500 whitespace-normal md:whitespace-nowrap">
                       HA Tâm Thu
                     </label>
                     <input
@@ -442,7 +442,7 @@ export default function UploadImage() {
                   </div>
 
                   <div>
-                    <label className="text-xs sm:text-sm font-bold text-gray-500 whitespace-normal md:whitespace-nowrap">
+                    <label className="block text-xs sm:text-sm font-bold text-gray-500 whitespace-normal md:whitespace-nowrap">
                       HA Tâm Trương
                     </label>
                     <input
@@ -455,7 +455,7 @@ export default function UploadImage() {
                   </div>
 
                   <div className="col-span-2">
-                    <label className="text-xs sm:text-sm font-bold text-gray-500 whitespace-normal md:whitespace-nowrap">
+                    <label className="block text-xs sm:text-sm font-bold text-gray-500 whitespace-normal md:whitespace-nowrap">
                       Nhịp tim
                     </label>
                     <input
