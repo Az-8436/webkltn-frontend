@@ -256,7 +256,33 @@ export default function UploadImage() {
       });
   };
 
-  const handlePatientChange = (e) => setCurrentPatient({ ...currentPatient, [e.target.name]: e.target.value });
+    // --- CẬP NHẬT LOGIC: TÍNH BMI TỰ ĐỘNG ---
+  const handlePatientChange = (e) => {
+    const { name, value } = e.target;
+    
+    // Tạo bản sao state mới
+    let updatedPatient = { ...currentPatient, [name]: value };
+
+    // Nếu người dùng thay đổi chiều cao hoặc cân nặng -> Tính lại BMI
+    if (name === "height" || name === "weight") {
+        const h = parseFloat(name === "height" ? value : currentPatient.height);
+        const w = parseFloat(name === "weight" ? value : currentPatient.weight);
+
+        // Công thức BMI = Cân nặng (kg) / (Chiều cao (m) ^ 2)
+        if (h > 0 && w > 0) {
+            const heightInMeter = h / 100;
+            const bmiValue = w / (heightInMeter * heightInMeter);
+            updatedPatient.bmi = bmiValue.toFixed(2); // Làm tròn 2 số thập phân
+        } else {
+            // Nếu xóa số liệu thì có thể để trống BMI hoặc giữ nguyên tùy ý
+            // updatedPatient.bmi = ""; 
+        }
+    }
+
+    setCurrentPatient(updatedPatient);
+  };
+
+  // const handlePatientChange = (e) => setCurrentPatient({ ...currentPatient, [e.target.name]: e.target.value });
   const handleBloodChange = (e) => setCurrentBlood({ ...currentBlood, [e.target.name]: e.target.value });
   const handleUnitChange = (e) => setCurrentUnits({ ...currentUnits, [e.target.name]: e.target.value });
   
