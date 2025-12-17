@@ -307,7 +307,7 @@ export default function Login() {
       <div className="bg-white/90 rounded-xl shadow-lg flex w-full max-w-3xl overflow-hidden">
 
         {/* LEFT: FORM */}
-        <div className="w-1/2 p-8">
+        <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-center">
           <h2 className="text-2xl font-bold mb-6 text-blue-800">Đăng nhập hệ thống</h2>
 
           {/* DOCTOR LOGIN */}
