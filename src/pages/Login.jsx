@@ -249,7 +249,7 @@ export default function Login() {
       localStorage.setItem("loggedIn", "true");
       localStorage.setItem("role", user.role);
       // Chuyển hướng
-      navigate("/chan-doan", { state: { role: user.role } });
+      navigate("/dashboard", { state: { role: user.role } });
     } else {
       setError("Sai tài khoản hoặc mật khẩu bác sĩ!");
     }
@@ -282,7 +282,7 @@ export default function Login() {
         localStorage.setItem("patientId", patientId);
 
         // Chuyển hướng
-        navigate("/chan-doan", {
+        navigate("/ho-so-benh-an", {
           state: { role: "admin", patientId: patientId, patientData: response.data },
         });
       } 
@@ -368,7 +368,7 @@ export default function Login() {
         </div>
 
         {/* RIGHT: IMAGE */}
-        <div className="w-1/2 flex items-center justify-center p-6 bg-blue-50">
+        <div className="hidden md:flex w-1/2 items-center justify-center p-6 bg-blue-50">
           <img
             src="/doctor.png"
             alt="Doctor"
