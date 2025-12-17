@@ -8,6 +8,8 @@ export default function UploadImage() {
   const [files, setFiles] = useState([]); 
   const [analyzedData, setAnalyzedData] = useState([]); 
   const [reviewIndex, setReviewIndex] = useState(-1); 
+
+  const [formError, setFormError] = useState("");
   
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("");
@@ -232,6 +234,30 @@ export default function UploadImage() {
   };
 
   const handleNextReview = () => {
+      const requiredFields = [
+        "name",
+        "age",
+        "gender",
+        "height",
+        "weight",
+        "systolicBloodPressure",
+        "diastolicBloodPressure",
+        "heartRate",
+      ];
+
+      const isMissing = requiredFields.some(
+        (field) =>
+          !currentPatient[field] ||
+          currentPatient[field].toString().trim() === ""
+      );
+
+      if (isMissing) {
+        setFormError("❗ Vui lòng nhập đầy đủ thông tin bệnh nhân!");
+        return;
+      }
+
+      setFormError("");
+
       const updatedData = [...analyzedData];
       updatedData[reviewIndex] = {
           ...updatedData[reviewIndex],
@@ -385,6 +411,11 @@ export default function UploadImage() {
             <div className="lg:col-span-2 space-y-6 pb-20">
               <div className="bg-white p-4 md:p-6 rounded-lg border border-gray-200 shadow-sm">
                 <h3 className="text-indigo-700 font-bold mb-4 text-lg">🧑‍⚕️ Thông tin bệnh nhân</h3>
+                {formError && (
+                    <div className="mb-4 p-3 bg-red-100 text-red-700 text-sm rounded-lg">
+                      {formError}
+                    </div>
+                )}
 
                 <div className="mb-4">
                   <label className="text-sm font-bold text-red-600 uppercase whitespace-normal md:whitespace-nowrap">
