@@ -156,9 +156,7 @@ export default function MedicalRecords() {
                 records.map((rec) => (
                   <tr key={rec.id} className="hover:bg-blue-50 transition duration-150 ease-in-out">
                     <td className="p-4 text-sm text-gray-500 font-medium">
-                       {new Date(rec.created_at).toLocaleString("vi-VN", {
-                          timeZone: "Asia/Ho_Chi_Minh",
-                        })}
+                      {rec.created_at}
                     </td>
                     <td className="p-4 font-bold text-gray-800">
                       {rec.patient_info?.name || "Ẩn danh"}

@@ -528,7 +528,11 @@ const filterByMode = (records, mode) => {
   const now = new Date();
 
   return records.filter((rec) => {
-    const visitDate = new Date(rec.created_at);
+    const visitDate = new Date(
+      new Date(rec.created_at).toLocaleString("en-US", {
+        timeZone: "Asia/Ho_Chi_Minh",
+      })
+    );    
     if (isNaN(visitDate)) return false;
 
     switch (mode) {
@@ -712,8 +716,18 @@ export default function History() {
                     <td className="p-3 text-gray-500 italic">
                       {r.patient_info?.id}
                     </td>
-                    <td className="p-3 text-gray-500">{r.created_at}</td>
-                    <td className="p-3">
+                    <td className="p-3 text-gray-500">
+                      <div>
+                        {new Date(r.created_at).toLocaleTimeString("vi-VN", {
+                          timeZone: "Asia/Ho_Chi_Minh",
+                        })}
+                      </div>
+                      <div>
+                        {new Date(r.created_at).toLocaleDateString("vi-VN", {
+                          timeZone: "Asia/Ho_Chi_Minh",
+                        })}
+                      </div>
+                    </td>                    <td className="p-3">
                       <span
                         className={`px-2 py-1 rounded-lg text-xs font-bold
                         ${
