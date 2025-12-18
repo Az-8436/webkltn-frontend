@@ -525,32 +525,27 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const filterByMode = (records, mode) => {
-  const now = new Date(
-    new Date().toLocaleString("en-US", {
-      timeZone: "Asia/Ho_Chi_Minh",
-    })
-  );
+  const now = new Date();
+  // Chuyển giờ hiện tại sang chuỗi ngày để so sánh chính xác theo múi giờ VN
+  const todayStr = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }); // Format: YYYY-MM-DD
+
   return records.filter((rec) => {
-    const visitDate = new Date(
-      new Date(rec.created_at).toLocaleString("en-US", {
-        timeZone: "Asia/Ho_Chi_Minh",
-      })
-    );    
+    const visitDate = new Date(rec.created_at);
     if (isNaN(visitDate)) return false;
+
+    // Lấy chuỗi ngày của hồ sơ theo múi giờ VN
+    const recordDateStr = visitDate.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' });
 
     switch (mode) {
       case "day":
-        return (
-          visitDate.getDate() === now.getDate() &&
-          visitDate.getMonth() === now.getMonth() &&
-          visitDate.getFullYear() === now.getFullYear()
-        );
+        return recordDateStr === todayStr;
       case "week": {
-        const dayOfWeek = now.getDay() === 0 ? 6 : now.getDay() - 1;
+        // Logic tuần: Tính toán dựa trên giá trị thời gian thực (Unix timestamp)
         const startOfWeek = new Date(now);
-        startOfWeek.setDate(now.getDate() - dayOfWeek);
+        const day = now.getDay() === 0 ? 6 : now.getDay() - 1;
+        startOfWeek.setDate(now.getDate() - day);
         startOfWeek.setHours(0, 0, 0, 0);
-
+        
         const endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 6);
         endOfWeek.setHours(23, 59, 59, 999);
@@ -558,16 +553,13 @@ const filterByMode = (records, mode) => {
         return visitDate >= startOfWeek && visitDate <= endOfWeek;
       }
       case "month":
-        return (
-          visitDate.getMonth() === now.getMonth() &&
-          visitDate.getFullYear() === now.getFullYear()
-        );
+        const currentMonth = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }).substring(0, 7);
+        return recordDateStr.startsWith(currentMonth);
       default:
         return true;
     }
   });
 };
-
 export default function History() {
   const navigate = useNavigate();
   const [records, setRecords] = useState([]);
@@ -720,17 +712,25 @@ export default function History() {
                       {r.patient_info?.id}
                     </td>
                     <td className="p-3 text-gray-500">
-                      <div>
-                        {new Date(r.created_at).toLocaleTimeString("vi-VN", {
-                          timeZone: "Asia/Ho_Chi_Minh",
-                        })}
+                      <div className="font-medium text-gray-700">
+                        {new Intl.DateTimeFormat('vi-VN', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit',
+                          hour12: false,
+                          timeZone: 'Asia/Ho_Chi_Minh'
+                        }).format(new Date(r.created_at))}
                       </div>
-                      <div>
-                        {new Date(r.created_at).toLocaleDateString("vi-VN", {
-                          timeZone: "Asia/Ho_Chi_Minh",
-                        })}
+                      <div className="text-xs">
+                        {new Intl.DateTimeFormat('vi-VN', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                          timeZone: 'Asia/Ho_Chi_Minh'
+                        }).format(new Date(r.created_at))}
                       </div>
-                    </td>                    <td className="p-3">
+                    </td>                                    
+                    <td className="p-3">
                       <span
                         className={`px-2 py-1 rounded-lg text-xs font-bold
                         ${
