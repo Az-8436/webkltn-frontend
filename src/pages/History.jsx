@@ -525,8 +525,11 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const filterByMode = (records, mode) => {
-  const now = new Date();
-
+  const now = new Date(
+    new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Ho_Chi_Minh",
+    })
+  );
   return records.filter((rec) => {
     const visitDate = new Date(
       new Date(rec.created_at).toLocaleString("en-US", {
