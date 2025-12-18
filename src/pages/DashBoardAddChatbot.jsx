@@ -1282,25 +1282,27 @@ export default function GlucoseHealth() {
 
   // --- LOGIC 2: TẢI DỮ LIỆU (ĐÃ SỬA: Thêm patient_id) ---
   const fetchHistory = async () => {
-    try {
-      const myId = localStorage.getItem("patientId");
-      if (!myId) return; // Nếu chưa có ID thì không tải
+      try {
+        const myId = localStorage.getItem("patientId");
+        if (!myId) return; 
 
-      // Gửi patient_id lên URL
-      const res = await fetch(`https://webkltn-backend.onrender.com/api/glucose/history?patient_id=${myId}`);
-      const data = await res.json();
-      
-      const formattedData = data.data.map(item => ({
-        ...item,
-        displayDate: item.created_at.split(" ")[0] 
-      }));
-      setHistory(formattedData);
-      setChartData(formattedData);
-    } catch (error) { console.error("Lỗi:", error); }
-  };
+        const res = await fetch(`https://webkltn-backend.onrender.com/api/glucose/history?patient_id=${myId}`);
+        const data = await res.json();
+        
+        // Sắp xếp dữ liệu theo thời gian tăng dần (cũ nhất ở index 0, mới nhất ở cuối mảng)
+        // Điều này giúp điểm mới nhập nằm ở bên phải biểu đồ.
+        const sortedData = data.data.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+        const formattedData = sortedData.map(item => ({
+          ...item,
+          displayDate: item.created_at.split(" ")[0] 
+        }));
+        setHistory(formattedData);
+        setChartData(formattedData);
+      } catch (error) { console.error("Lỗi:", error); }
+    };
 
   useEffect(() => { fetchHistory(); }, []);
-
   // --- LOGIC 3: LƯU KẾT QUẢ (ĐÃ SỬA: Thêm patient_id) ---
   const handleSubmit = async (e) => {
     e.preventDefault();
